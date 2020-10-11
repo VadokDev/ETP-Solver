@@ -1,0 +1,192 @@
+\documentclass[letter, 10pt]{article}
+\usepackage[latin1]{inputenc}
+%%\usepackage[spanish]{babel}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[dvips]{graphicx}
+\usepackage{url}
+\usepackage{ctable} % for \specialrule command
+\usepackage[top=3cm,bottom=3cm,left=3.5cm,right=3.5cm,footskip=1.5cm,headheight=1.5cm,headsep=.5cm,textheight=3cm]{geometry}
+
+\newcommand*\sq{\mathbin{\vcenter{\hbox{\rule{.7ex}{.7ex}}}}}
+
+\begin{document}
+\title{Inteligencia Artificial \\ \begin{Large}Estado del Arte: Examination Timetabling Problem\end{Large}}
+\author{Gonzalo Fernández}
+\date{\today}
+\maketitle
+
+
+%--------------------No borrar esta secci\'on--------------------------------%
+\section*{Evaluaci\'on}
+
+\begin{tabular}{ll}
+Resumen (5\%): & \underline{\hspace{2cm}} \\
+Introducci\'on (5\%):  & \underline{\hspace{2cm}} \\
+Definici\'on del Problema (10\%):  & \underline{\hspace{2cm}} \\
+Estado del Arte (35\%):  & \underline{\hspace{2cm}} \\
+Modelo Matem\'atico (20\%): &  \underline{\hspace{2cm}}\\
+Conclusiones (20\%): &  \underline{\hspace{2cm}}\\
+Bibliograf\'ia (5\%): & \underline{\hspace{2cm}}\\
+ &  \\
+\textbf{Nota Final (100\%)}:   & \underline{\hspace{2cm}}
+\end{tabular}
+%---------------------------------------------------------------------------%
+\vspace{2cm}
+
+
+\begin{abstract}
+El Examination Timetabling Problem (ETP)
+\end{abstract}
+
+\section{Introducci\'on}
+
+Una de las herramientas más importantes para medir el conocimiento adquirido de un estudiante en cualquier institución educativa son los exámenes, de estos depende la aprobación de un curso y por lo tanto, mientras mejores condiciones se brinden para su rendición, mejores resultados pueden esperarse \cite{MUKLASON2019647}. Estas condiciones se dan por diversos factores, entre ellos están los horarios en que los exámenes son asignados pues un estudiante no puede rendir 2 exámenes al mismo tiempo y a su vez, necesita un tiempo de preparación entre exámenes. Asignar estos horarios es una tarea recurrente que consume mucho tiempo y se realiza comúnmente ajustando a la actualidad alguna asignación de exámenes previa, o bien con apoyo de un sistema de administración que no automatiza del todo el proceso \cite{NAJIAZIMI2005705}, no obstante ninguno de estos enfoques se sostiene ante la constante variación de cursos, estudiantes y otros factores a lo largo del tiempo, lo que hace de este un problema complejo y con mucha importancia dentro de una institución educativa.\\
+
+A este problema se le conoce como Examination Timetabling Problem (ETP), el cual se define como "la calendarización de exámenes de un conjunto de cursos universitarios, evitando traslapes de cursos con estudiantes en común, y distribuyendo los exámenes de la mejor forma posible" \cite{Schaerf1999}. El ETP forma parte de la familia de problemas NP-completos \cite{10.1093/comjnl/10.1.85}, lo cual indica que no es posible resolver el ETP en un tiempo razonable. Por otro lado, se suma a esto que cada institución educativa cuenta con distintos requerimientos a la hora de asignar los horarios de sus exámenes, de estos requerimientos se distinguen 2 tipos de restricciones al problema \cite{Qu2009}, llamadas restricciones blandas (que deben satisfacerse lo mayor posible) y restricciones duras (que siempre deben ser satisfechas). Las restricciones duras deben ser satisfechas siempre, las blandas en cambio, deben satisfacerse lo mayor posible con el fin de lograr una mejor solución.\\
+
+La NP-completitud del problema, sus variadas restricciones duras (ver Tabla~\ref{tab:duras}) y blandas (ver Tabla~\ref{tab:blandas}) y su enorme impacto tanto en el área de la educación como en problemas de horarios en general, hacen de este un problema súmamente interesante e importante de resolver. El propósito de este documento consta en abordar una definición completa del problema así como la variante sobre la que se va a trabajar, para luego explicar a cabalidad el Estado del Arte del mismo, seguido de una propuesta de modelo matemático para resolver la variante previamente definida del problema y finalmente exponer algunas conclusiones respecto del trabajo realizado sobre el ETP y su estado del arte.
+
+\section{Definici\'on del Problema}
+
+El ETP es un Timetabling Problem, y como tal se compone de 4 parámetros principales: un conjunto finito de tiempos, un conjunto finito de recursos, un conjunto finito de reuniones y un conjunto finito de restricciones \cite{Qu2009}, donde en su forma más general los tiempos son los horarios en que se toman los exámenes, los recursos serían los estudiantes y las salas en donde estos se llevan a cabo, las reuniones serían los exámenes que cuentan con estudiantes que deben rendirlos y el conjunto de restricciones sería básicamente que un estudiante no puede tener asignado 2 o más exámenes al mismo tiempo. En esta definición general permite abordar el ETP como un problema de búsqueda pues basta con encontrar una configuración de horarios tal que ningún estudiante tenga 2 exámenes al mismo tiempo, a esto se suman las restricciones blandas que [FALTA CHAMUYO]. Las variaciones a este problema corresponden a la realidad de cada universidad, entre estas se encuentran la implementación de diversas versiones para el mismo examen, de modo tal que un estudiante no tenga 2 exámenes al mismo tiempo y así, mejorar la distribución de los mismos \cite{WOUMANS2016178}, otra variación considera un subconjunto de salas para cada examen donde éste puede ser rendido y consultar a los estudiantes sus preferencias para calendarizar evaluaciones, sin que ésto les garantice que serán calendarizadas en esos horarios \cite{LAPORTE1984351}.
+
+
+
+
+Explicaci\'on del problema que se va a estudiar, en qu\'e consiste, cu\'ales son sus variables , restricciones y objetivo(s) de manera general (en palabras, no una formulaci\'on matem\'atica). Debe entenderse claramente el problema y qu\'e busca resolver.
+Explicar si existen problemas relacionados.
+Destacar, si existen, las variantes m\'as conocidas.\\
+Redactar en tercera persona, sin faltas de ortograf\'ia y referenciar correctamente sus fuentes mediante el comando  \verb+\cite{ }+. Por ejemplo, para hacer referencia al art\'iculo de algoritmos h\'ibridos para problemas de satisfacci\'on 
+ de restricciones.
+
+\section{Estado del Arte}
+
+Las primeras apariciones del ETP en la literatura datan del 1964, Broder \cite{10.1145/355586.364824} da una primera formalización del problema debido a la necesidad de asignar los horarios de los exámenes finales de los cursos de una universidad y propone un modelo matemático para el mismo, también propone un algoritmo aleatorizado de tipo Monte Carlo para encontrar una solución la cual, si bien no garantizaba ser la mejor, usualmente sería óptima. Entre otros métodos planteados durante esa época se encuentran: una técnica de ordenamiento la cual también permitía generar soluciones que no garantizaban ser las mejores pero sí estarían cerca de ser óptimas \cite{10.1093/comjnl/7.2.117}; un algoritmo de particionamiento y coloreo de grafos el cual sólo se encarga de asignar horarios sin garantizar que un estudiante no tendrá 2 exámenes al mismo tiempo \cite{10.1145/365696.365713}; y un algoritmo enfocado en minimizar la matriz de conflictos entre exámenes y estudiantes siguiendo ciertas restricciones, una solución entregada por este algoritmo sería la mejor según los criterios de aquella universidad, no obstante, dado el crecimiento exponencial de memoria que sufre al aumentar el tamaño de la entrada, no puede usarse con todos los exámenes de una universidad al mismo tiempo, requiere separar su uso en unidades lógicas como por ejemplo las carreras o departamentos \cite{10.1093/comjnl/11.1.41}. 
+
+
+La informaci\'on que describen en este punto se basa en los estudios realizados con antelaci\'on respecto al tema.
+Lo m\'as importante que se ha hecho hasta ahora con relaci\'on al problema. Deber\'ia responder preguntas como las siguientes:
+?`cu\'ando surge?, ?`qu\'e m\'etodos se han usado para resolverlo?, ?`cu\'ales son los mejores algoritmos que se han creado hasta
+la fecha?, ?`qu\'e representaciones han tenido los mejores resultados?, ?`cu\'al es la tendencia actual para resolver el problema?, tipos de movimientos, heur\'isticas, m\'etodos completos, tendencias, etc... Puede incluir gr\'aficos comparativos o explicativos.\\
+
+
+\begin{table}[]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lp{13.45cm}}
+\hline
+   & Primary hard constraints \\ \specialrule{.1em}{.05em}{.05em} 
+1. & No exams with common resources (e.g. students) assigned simultaneously \\
+2. & Resources need to be sufficient (i.e. the number of students assigned to a room needs to be below the room capacity, enough rooms are needed for all of the exams) \\ \hline
+\end{tabular}%
+}
+\caption{Principales restricciones duras en ETP \cite{Qu2009}}
+\label{tab:duras}
+\end{table}
+
+\begin{table}[]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lp{13.45cm}}
+\hline
+ 	& Primary hard constraints \\ \specialrule{.1em}{.05em}{.05em} 
+1. 	& Spread conflicting exams as evenly as possible, or not in x consecutive timeslots or days. \\
+2. 	& Groups of exams required to take place at the same time, on the same day or at one location. \\
+3. 	& Exams to be consecutive. \\
+4. 	& Schedule all exams, or largest exams, as early as possible. \\
+5. 	& An ordering (precedence) of exams needs to be satisfied. \\
+6. 	& Limited number of students and/or exams in any timeslot. \\
+7. 	& Time requirements (e.g. exams (not) to be in certain timeslots). \\
+8. 	& Conflicting exams on the same day to be located nearby. \\
+9. 	& Exams may be split over similar locations. \\
+10. & Only exams of the same length can be allocated into the same room. \\
+11. & Resource requirements (e.g. room facility). \\ \hline
+\end{tabular}%
+}
+\caption{Principales restricciones blandas en ETP \cite{Qu2009}}
+\label{tab:blandas}
+\end{table}
+
+
+\section{Modelo Matem\'atico}
+
+Con el fin de resolver la variante del ETP a trabajar, se propone un modelo matemático que considera un costo de proximidad entre exámenes \cite{LAPORTE1984351} por no distribuír correctamente los exámenes por Laporte y la minimización de los timeslots por \cite{WIJGERS}
+
+Uno o m\'as modelos matem\'aticos para el problema, idealmente indicando el espacio de b\'usqueda para cada uno. Cada modelo debe estar correctamente referenciado, adem\'as no debe ser una imagen extraida. Tambi\'en deben explicarse en detalle cada una de las partes, mostrando claramente la funci\'on a maximizar/minimizar, variables y restricciones. Tanto las f\'ormulas como las explicaciones deben ser consistentes.\\
+
+\textbf{Parámetros:}
+
+\begin{itemize}
+	\item[$\sq$] $E$: Cantidad de exámenes, con $E \geq 1$
+	\item[$\sq$] $L$: Cantidad de horarios, con $L \geq 1$
+	\item[$\sq$] $e_i$: Cantidad de estudiantes que deben rendir el examen $i$, con $1 \leq i \leq E$
+	\item[$\sq$] $C_{ij}$: Cantidad de estudiantes que deben rendir el examen $i$ y $j$, con ($1 \leq i < j \leq E$)
+	\item[$\sq$] $w_{s}$: Costo de proximidad entre exámenes separados por $s$ horarios
+	\begin{itemize}
+		\item[] Se define según Laporte \cite{LAPORTE1984351} como: $w_{1} = 16, w_{2} = 8, w_{3} = 4, w_{4} = 2, w_{5} = 1$ 
+	\end{itemize}
+
+\end{itemize}
+
+\textbf{Variables:}
+\begin{itemize}
+	\item[$\sq$] $x_{il} =
+					\left\{
+						\begin{array}{ll}
+							1  & \mbox{si el examen } i \text{ es asignado en el horario } l \text{, con } \text{, con } 1 \leq i \leq E \text{ y } 1 \leq l \leq L \\
+							0 & \mbox{en cualquier otro caso}
+						\end{array}
+					\right$
+	\item[$\sq$] $t_{l} =
+					\left\{
+						\begin{array}{ll}
+							1  & \mbox{si el horario } l \text{ es usado en la solución, con } 1 \leq l \leq L \\
+							0 & \mbox{en cualquier otro caso}
+						\end{array}
+					\right$
+
+	\item[$\sq$] $M$: Un número arbitrariamente grande ($M > c_{ij}; i, j = 1, \ldots ,E$, con $i < j$)
+\end{itemize}
+
+\textbf{Función Objetivo:}
+
+\begin{equation} 
+	\text{min } F: \sum_{l=1}^{L} \sum_{s=1}^{5} \sum_{i=1}^{E} \sum_{j=1}^{E} (x_{il}x_{j,l-s} + x_{il}x_{j,l+s}) c_{ij} w_{s} + \sum_{l=1}^{L} t_{l}
+\end{equation}
+
+\textbf{Restricciones:}
+
+\begin{equation} 
+	x_{il} + x_{jl} \leq 2 - \frac{c_{ij}}{M} \quad \forall i, j : i<j \wedge i, j \in \{1, \ldots, E\} \wedge l \in \{1, \ldots, L\}
+\end{equation}
+
+\begin{equation}
+	\sum_{l=1}^{L} x_{il}t_l = 1 \quad \forall i \in \{1, \ldots, E\}
+\end{equation}
+
+\begin{equation}
+	\sum_{i=1}^{E} \sum_{l=1}^{L} x_{il}t_l \leq E
+\end{equation}
+
+\textbf{Naturaleza de las Variables:}
+\begin{equation}
+	x_{ij} \in \{1, 0\}
+\end{equation}
+\begin{equation}
+	t_{l} \in \{1, 0\}
+\end{equation}
+\begin{equation}
+	M \in \mathbb N
+\end{equation}
+\section{Conclusiones}
+
+Conclusiones RELEVANTES del estudio realizado. Deber\'ia responder a las preguntas: ?`todas las t\'ecnicas resuelven el mismo problema o hay algunas diferencias?, ?`En qu\'e se parecen o difieren las t\'ecnicas en el contexto del problema?, ?`qu\'e limitaciones tienen?, ?`qu\'e t\'ecnicas o estrategias son las m\'as prometedoras?, ?`existe trabajo futuro por realizar?, ?`qu\'e ideas usted propone como lineamientos para continuar con investigaciones futuras?
+
+
+\section{Bibliograf\'ia}
+Indicando toda la informaci\'on necesaria de acuerdo al tipo de documento revisado. Todas las referencias deben ser citadas en el documento.
+\bibliographystyle{plain}
+\bibliography{Referencias}
+
+\end{document} 
