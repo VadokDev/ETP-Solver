@@ -17,9 +17,10 @@ class FcSolver {
 	public:
 		FcSolver(Instance* instance);
 		~FcSolver();
-		void doForwardChecking(int exm);
+		int isAssignable(int exm, int slot);
+		int doForwardChecking(int exm);
 		void resetDomains(int actualExm);
-		void solutionCost();
+		void checkSolution();
 		void doBackTracking(int actualExm);
 };
 

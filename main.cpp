@@ -16,6 +16,10 @@ int main(int argc, char const *argv[]) {
 	etp.genConflictMatrix();
 	etp.loadStudents();
 
+	FcSolver solver(&etp);
+	solver.doBackTracking(1);
+	solver.checkSolution();
+
 	return 0;
 }
 
