@@ -14,6 +14,7 @@ class Instance {
 		int E;
 		int L;
 		int S;
+		vii sExams;
 		vii cMatrix;
 		std::string name;
 		std::string instancesDir = INSTANCES_DIRECTORY;
@@ -21,7 +22,8 @@ class Instance {
 		void loadExams();
 		void genConflictMatrix();
 		void loadStudents();
-		void showConflictsMatrix();
+		void showStudentExams();
+		void showConflictMatrix();
 		Instance(std::string instanceName);
 		~Instance();
 };

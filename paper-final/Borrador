@@ -1,0 +1,53 @@
+Introducciones
+
+Una explicaci\'on breve del contenido del informe, es decir, detalla: Prop\'osito, Estructura del Documento, Descripci\'on (muy breve) del Problema y Motivaci\'on.
+
+Explicación breve del informe
+	Propósito
+	Estructura del documento
+	Descripción breve del problema
+	Motivación
+
+
+
+
+
+El problema de horarios exámenes es un problema común en las instituciones educacionales.
+Por lo general se realiza a mano o con la ayuda parcial de un sistema de administración, incluso se puede ajustar una planifica
+Los cambios en la cantidad de estudiantes, cursos y otros factores hacen de este un enfoque ineficiente
+El problema es difícil debido a su naturaleza combinatoria y la ausencia de herramientas automáticas que lo resuelva de manera eficiente
+ETP es un problema NP Completo
+
+
+En la literatura, el estado del arte para resolver el problema son meta-heurísticas, pero este enfoque tiene limitaciones, es decir, la necesidad de un intenso ajuste de los parámetros del problema
+Para combatir estro, se propone un nuevo enfoque con hiperheurísticas
+
+
+Calendarizar exámenes es un problema común para muchas insticuciones educacionales. Es comúnmente realizado a mano o con la ayuda limitada de un sistema de administración, y en ocasiones se basa en alguna calendarización previa que se pueda ajustar a lo que se necesita, no obstante, debido a los cambios en la cantidad de estudiantes, cursos y otros factores hacen de éste un enfoque ineficiente para lograr una calendarización adecuada
+
+El problema de calendarizar horarios de examenes consta de la calendarización 
+
+
+
+Se ha demostrado que el proceso de encontrar un horario para cada examen de modo tal que no hayan conflictos es equivalente a colorear los vértices de un grafo de modo tal que todos los vértices adjacentes tengan un color distinto este problema a su vez recae en la calificación de los problemas NP completos \cite{Karp1972}, lo cual indica que no es posible resolver el ETP en un tiempo razonable.
+
+Agendar exámenes es una tarea recurrente que consume bastante tiempo, y se define como "la calendarización de exámenes de un conjunto de cursos universitarios, evitando traslapes de cursos con estudiantes en común, y distribuyendo los exámenes de la mejor forma posible" \cite{Schaerf1999}. El agendamiento de exámenes debe tratar con muchos requerimientos, entre estos: no tener 2 exámenes al mismo tiempo para un estudiante, brindar tiempo suficiente para prepararse entre exámenes, y adecuarse a la disponibilidad de salas. Con estos requerimientos, se distinguen 2 tipos de restricciones \cite{Qu2009} llamadas restricciones blandas y restricciones duras. Las restricciones duras deben ser satisfechas siempre, las blandas en cambio, deben satisfacerse lo mayor posible con el fin de lograr una mejor solución, haciendo de este más bien un problema de optimización por sobre uno de búsqueda. 
+
+
+
+Los problemas de agendar exámenes residen en distintas formas incluyendo agendamiento educacional, agendamiento de enfermos, agendamiento de deportes y agendamiento de transportes. Todos estos representan un area importante de problemas investigadores tanto de Investigación de Operaciones como de Inteligencia Artificial desde los 60s. En la actualidad ha incrementado el nivel de investigación sobre esta área, quedando evidenciado por la creación de diversas conferencias internacionales en la Practica y Teoría sobre Automatización de Horarios (PATAT por su sus siglas en inglés)
+
+Un problema de horarios consta de 4 parámetros: T, un conjunto finito de tiempos; T, un conjunto finito de recursos; M, un conjunto finito de reuniones; y C, un conjunto finito de restricciones. El problema es asignar tiempos y recursos a las reuniones satisfaciendo las restricciones lo mejor posible.
+
+Entre la amplia variedad de problemas de horarios, los horarios de clase son de los más ampliamente estudiados, pues es de las más importantes en una institución académica así como también de las que más tiempo consumen
+
+
+Existen 
+
+
+
+Explicaci\'on del problema que se va a estudiar, en qu\'e consiste, cu\'ales son sus variables , restricciones y objetivo(s) de manera general (en palabras, no una formulaci\'on matem\'atica). Debe entenderse claramente el problema y qu\'e busca resolver.
+Explicar si existen problemas relacionados.
+Destacar, si existen, las variantes m\'as conocidas.\\
+Redactar en tercera persona, sin faltas de ortograf\'ia y referenciar correctamente sus fuentes mediante el comando  \verb+\cite{ }+. Por ejemplo, para hacer referencia al art\'iculo de algoritmos h\'ibridos para problemas de satisfacci\'on 
+ de restricciones~\cite{Prosser93Hybrid}.

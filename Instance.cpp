@@ -31,6 +31,8 @@ void Instance::loadStudents() {
 	int lastStu, exm, stu = 1, cTotal = 0;
 
 	vi exams(E);
+	sExams.push_back(exams);
+
 	ifstream stuFile(instancesDir + name + ".stu");
 	if (!stuFile.is_open()) {
 		throw 20;
@@ -41,11 +43,15 @@ void Instance::loadStudents() {
 	while(cin >> buff >> exm) {
 		lastStu = stu;
 		stu = atoi(&buff[1]);
+
 		//cout << "Stu: " << stu << " " << exm << '\n';
 		if(exm > E) {
-			cout << "exm > E " << exm << '\n';
+			//cout << "exm > E " << exm << '\n';
+			exm = 1;
  		}
 		if(lastStu != stu) {
+			vi studentExams(cTotal);
+
 			for (int i = 0; i < cTotal; ++i) {
 				for (int j = 0; j < cTotal; ++j) {
 					if(i == j)
@@ -53,23 +59,50 @@ void Instance::loadStudents() {
 
 					cMatrix[exams[i]][exams[j]] += 1;
 				}
+				studentExams[i] = exams[i];
 			}
 
+			sExams.push_back(studentExams);
 			cTotal = 0;
 		}
 
 		exams[cTotal++] = exm;
 	}
 
+	vi studentExams(cTotal);
+
+	for (int i = 0; i < cTotal; ++i) {
+		for (int j = 0; j < cTotal; ++j) {
+			if(i == j)
+				continue;
+
+			cMatrix[exams[i]][exams[j]] += 1;
+		}
+		studentExams[i] = exams[i];
+	}
+
+	sExams.push_back(studentExams);
+	cTotal = 0;
+
 	stuFile.close();
+	S = stu;
 	cout << "[" << name << "] " << "Loaded " << stu << " students" << '\n';
 }
 
-void Instance::showConflictsMatrix() {
-	for (int i = 0; i < E + 1; ++i) {
-		for (int j = 0; j < E + 1; ++j) {
-			if(cMatrix[i][j] != 0)
-				cout << cMatrix[i][j] << " ";
+void Instance::showStudentExams() {
+	for (int i = 1; i < S + 1; ++i)	{
+		cout << "Student " << i << " exams: ";
+		for (size_t j = 0; j < sExams[i].size(); ++j) {
+			cout << sExams[i][j] << " ";
+		}
+		cout << '\n';
+	}
+}
+
+void Instance::showConflictMatrix() {
+	for (int i = 1; i < E + 1; ++i) {
+		for (int j = 1; j < E + 1; ++j) {
+			cout << cMatrix[i][j] << " ";
 		}
 		cout << '\n';
 	}

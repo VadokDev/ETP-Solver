@@ -1,0 +1,85 @@
+\documentclass[letter, 10pt]{article}
+\usepackage[latin1]{inputenc}
+%%\usepackage[spanish]{babel}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[dvips]{graphicx}
+\usepackage{url}
+\usepackage[top=3cm,bottom=3cm,left=3.5cm,right=3.5cm,footskip=1.5cm,headheight=1.5cm,headsep=.5cm,textheight=3cm]{geometry}
+
+
+\begin{document}
+\title{Inteligencia Artificial \\ \begin{Large}Informe Final: Problema [Nombre Problema]\end{Large}}
+\author{[Nombre autor]}
+\date{\today}
+\maketitle
+
+
+%--------------------No borrar esta secci\'on--------------------------------%
+\section*{Evaluaci\'on}
+
+\begin{tabular}{ll}
+Mejoras 1ra Entrega (10\%): &  \underline{\hspace{2cm}}\\
+C\'odigo Fuente (10\%): &  \underline{\hspace{2cm}}\\
+Representaci\'on (15\%):  & \underline{\hspace{2cm}} \\
+Descripci\'on del algoritmo (20\%):  & \underline{\hspace{2cm}} \\
+Experimentos (10\%):  & \underline{\hspace{2cm}} \\
+Resultados (10\%):  & \underline{\hspace{2cm}} \\
+Conclusiones (20\%): &  \underline{\hspace{2cm}}\\
+Bibliograf\'ia (5\%): & \underline{\hspace{2cm}}\\
+ &  \\
+\textbf{Nota Final (100)}:   & \underline{\hspace{2cm}}
+\end{tabular}
+%---------------------------------------------------------------------------%
+
+\begin{abstract}
+Resumen del informe en no m\'as de 10 l\'ineas, donde se sintetice el problema que se trata, el acercamiento propuesto
+y sirva para que un lector no involucrado comprenda el objetivo del documento.
+\end{abstract}
+
+\section{Introducci\'on}
+Una explicaci\'on breve del contenido del informe, es decir, detalla: Prop\'osito, Estructura del Documento, Descripci\'on (muy breve) del Problema y Motivaci\'on e ideas fundamentales de la propuesta de soluci\'on. Incluye la descripci\'on del contenido del Informe secci\'on por secci\'on.
+
+\section{Definici\'on del Problema}
+Explicaci\'on del problema que se va a estudiar, en qu\'e consiste, cu\'ales son sus variables , restricciones y objetivo(s) de manera general (en palabras, no una formulaci\'on matem\'atica). Debe entenderse claramente el problema y qu\'e busca resolver.
+Explicar si existen problemas relacionados.
+Destacar, si existen, las variantes m\'as conocidas.\\
+Redactar en tercera persona, sin faltas de ortograf\'ia y referenciar correctamente sus fuentes mediante el comando  \verb+\cite{ }+. Por ejemplo, para hacer referencia al art\'iculo de algoritmos h\'ibridos para problemas de satisfacci\'on de restricciones~\cite{Prosser93Hybrid}.
+
+\section{Estado del Arte}
+La informaci\'on que describen en este punto se basa en los estudios realizados con antelaci\'on respecto al tema.
+Lo m\'as importante que se ha hecho hasta ahora con relaci\'on al problema. Deber\'ia responder preguntas como las siguientes:
+?`cu\'ando surge?, ?`qu\'e m\'etodos se han usado para resolverlo?, ?`cu\'ales son los mejores algoritmos que se han creado hasta
+la fecha?, ?`qu\'e representaciones han tenido los mejores resultados?, ?`cu\'al es la tendencia actual para resolver el problema?, tipos de movimientos, heur\'isticas, m\'etodos completos, tendencias, etc... Puede incluir gr\'aficos comparativos o explicativos.\\
+
+\section{Modelo Matem\'atico}
+Uno o m\'as modelos matem\'aticos para el problema, idealmente indicando el espacio de b\'usqueda para cada uno. Cada modelo debe estar correctamente referenciado, adem\'as no debe ser una imagen extraida. Tambi\'en deben explicarse en detalle cada una de las partes, mostrando claramente la funci\'on a maximizar/minimizar, variables y restricciones. Tanto las f\'ormulas como las explicaciones deben ser consistentes.
+
+\section{Representaci\'on}
+Representaci\'on de \textbf{soluciones} (arreglos, matrices, etc.). En caso de t\'ecnicas completas indicar variables y dominios. Incluir justificaci\'on y ejemplos para mayor claridad.
+
+\section{Descripci\'on del algoritmo}
+C\'omo fue implementada la soluci\'on. Interesa la implementaci\'on particular m\'as que el algoritmo gen\'erico, es decir, si se tiene que implementar SA, lo que se espera es que se explique en pseudoc\'odigo la estructura
+general y en p\'arrafos explicativos c\'omo fue implementada cada parte para su problema particular. Si
+se utilizan operadores/movimientos se debe justificar por qu\'e se utilizaron dichos operadores/movimientos. 
+En caso de una t\'ecnica completa, describir detalles relevantes del proceso, si se utiliza recursi\'on o no, explicar c\'omo se van construyendo soluciones, cu\'ando se revisan restricciones, c\'omo se registran conflictos, etc. En este punto no se espera que se incluya c\'odigo, eso va aparte.
+
+\section{Experimentos}
+Se necesita saber c\'omo experimentaron, c\'omo definieron par\'ametros, 
+c\'omo los fueron modificando, cu\'ales problemas/instancias se estudiaron y por qu\'e, etc. 
+Recuerde que las t\'ecnicas completas son deterministas y las t\'ecnicas incompletas son estoc\'asticas.
+
+\section{Resultados}
+Qu\'e fue lo que se logr\'o con la experimentaci\'on, incluir tablas y gr\'aficos (lo m\'as explicativos posible).
+Los resultados deben ser comentados y justificados en detalle en esta secci\'on.
+
+\section{Conclusiones}
+Conclusiones RELEVANTES del estudio realizado. Incluir conclusiones acerca de la adecuaci\'on de la propuesta de soluci\'on al problema que se busca resolver. Listar y analizar ventajas y desventajas de la propuesta en base a los resultados obtenidos y comportamiento de la propuesta en diferentes escenarios (problemas/instancias/par\'ametros). Incluir trabajo futuro en base a las conclusiones.
+
+\section{Bibliograf\'ia}
+Indicando toda la informaci\'on necesaria de acuerdo al tipo de documento revisado. Todas las referencias deben ser citadas en el documento.
+
+\bibliographystyle{plain}
+\bibliography{Referencias}
+
+\end{document} 

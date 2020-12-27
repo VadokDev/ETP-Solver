@@ -1,0 +1,246 @@
+\documentclass[letter, 10pt]{article}
+\usepackage[utf8]{inputenc}
+%%\usepackage[spanish]{babel}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[dvips]{graphicx}
+\usepackage{url}
+\usepackage{ctable} % for \specialrule command
+\usepackage[top=3cm,bottom=3cm,left=3.5cm,right=3.5cm,footskip=1.5cm,headheight=1.5cm,headsep=.5cm,textheight=3cm]{geometry}
+\usepackage{hyperref}
+
+
+\usepackage{etoolbox}
+\patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
+\newcommand*\sq{\mathbin{\vcenter{\hbox{\rule{.7ex}{.7ex}}}}}
+
+\begin{document}
+\title{Inteligencia Artificial \\ \begin{Large}Estado del Arte: Examination Timetabling Problem\end{Large}}
+\author{Gonzalo Fernández}
+\date{\today}
+\maketitle
+
+
+%--------------------No borrar esta sección--------------------------------%
+\section*{Evaluación}
+
+\begin{tabular}{ll}
+Resumen (5\%): & \underline{\hspace{2cm}} \\
+Introducción (5\%):  & \underline{\hspace{2cm}} \\
+Definición del Problema (10\%):  & \underline{\hspace{2cm}} \\
+Estado del Arte (35\%):  & \underline{\hspace{2cm}} \\
+Modelo Matemático (20\%): &  \underline{\hspace{2cm}}\\
+Conclusiones (20\%): &  \underline{\hspace{2cm}}\\
+Bibliografía (5\%): & \underline{\hspace{2cm}}\\
+ &  \\
+\textbf{Nota Final (100\%)}:   & \underline{\hspace{2cm}}
+\end{tabular}
+%---------------------------------------------------------------------------%
+\vspace{2cm}
+
+
+\begin{abstract}
+El Examination Timetabling Problem (ETP) es un problema que consta de asignar horarios a un conjunto de exámenes bajo ciertas restricciones, la calidad de esta asignación tiene un gran impacto en el desempeño de los estudiantes a la hora de rendir sus exámenes, lo que hace de este un problema sumamente importante y estudiado a lo largo de la historia, pero que a su vez, se han identificado variantes según las necesidades de cada institución. Este documento plantea el problema desde sus orígenes, sus distintas soluciones propuestas desde métodos exactos hasta hyperheurísticas, así como también un modelo matemático que busca solucionarlo y algunas conclusiones respecto al trabajo actual y futuro sobre el cual se deba guiar el resto de su investigación.
+\end{abstract}
+
+\section{Introducción}
+
+Una de las herramientas más importantes para medir el conocimiento adquirido de un estudiante en cualquier institución educativa son los exámenes, de estos depende la aprobación de un curso y por lo tanto, mientras mejores condiciones se brinden para su rendición, mejores resultados pueden esperarse \cite{MUKLASON2019647}. Estas condiciones se dan por diversos factores, entre ellos están los horarios en que los exámenes son asignados pues un estudiante no puede rendir 2 exámenes al mismo tiempo y a su vez, necesita un tiempo de preparación entre exámenes. Asignar estos horarios es una tarea recurrente que consume mucho tiempo y se realiza comúnmente ajustando a la actualidad alguna asignación de exámenes previa, o bien con apoyo de un sistema de administración que no automatiza del todo el proceso \cite{NAJIAZIMI2005705}, no obstante ninguno de estos enfoques se sostiene ante la constante variación de cursos, estudiantes y otros factores a lo largo del tiempo, lo que hace de este un problema complejo y con mucha importancia dentro de una institución educativa.\\
+
+A este problema se le conoce como Examination Timetabling Problem (ETP), el cual se define como "la calendarización de exámenes de un conjunto de cursos universitarios, evitando traslapes de cursos con estudiantes en común, y distribuyendo los exámenes de la mejor forma posible" \cite{Schaerf1999}. El ETP forma parte de la familia de problemas NP-completos \cite{10.1093/comjnl/10.1.85}, lo cual indica que no es posible resolver el ETP en un tiempo razonable. Por otro lado, se suma a esto que cada institución educativa cuenta con distintos requerimientos a la hora de asignar los horarios de sus exámenes, de estos requerimientos se distinguen 2 tipos de restricciones al problema \cite{Qu2009}, llamadas restricciones blandas (que deben satisfacerse lo mayor posible) y restricciones duras (que siempre deben ser satisfechas). Las restricciones duras deben ser satisfechas siempre, las blandas en cambio, deben satisfacerse lo mayor posible con el fin de lograr una mejor solución. En este documento se trabajará una variación donde se cuenta con un conjunto de exámenes y un conjunto de estudiantes que debe rendirlo, el objetivo será buscar una asignación de horarios tal que ningún estudiante tenga 2 exámenes al mismo tiempo y que a su vez, se minimice la cantidad de horarios necesarios para llevar a cabo los exámenes, un segundo objetivo menos importante será distribuir los exámenes lo mejor posible, de manera tal que los estudiantes cuenten con tiempo para estudiar entre cada examen, no obstante, éste último no es un objetivo más importante que el de disminuir la cantidad de horarios.\\
+
+La NP-completitud del problema, sus variadas restricciones duras (ver Tabla~\ref{tab:duras}) y blandas (ver Tabla~\ref{tab:blandas}) y su enorme impacto tanto en el área de la educación como en problemas de horarios en general, hacen de este un problema sumamente interesante e importante de resolver.\\ 
+
+El presente documento se estructura de la siguiente manera: primero se definirá el problema del ETP, se hablará sobre sus variantes y se detallará la variante a trabajar en la sección (\ref{definicion}); luego se dará una reseña histórica del problema a través de su estado del arte en la sección (\ref{estado}); luego se planteará un modelo matemático que permita resolver la variante del ETP que se está estudiando en la sección (\ref{modelo}); finalmente, se entregan algunas conclusiones sobre los contenidos tratados e ideas de trabajo a futuro sobre este problema en la sección (\ref{conclusiones}).
+
+\section{Definición del Problema} \label{definicion}
+
+El ETP es un Timetabling Problem, y como tal se compone de 4 parámetros principales: un conjunto finito de tiempos, un conjunto finito de recursos, un conjunto finito de reuniones y un conjunto finito de restricciones \cite{Qu2009}, donde en su forma más general los tiempos son los horarios en que se toman los exámenes, los recursos serían los estudiantes y las salas en donde estos se llevan a cabo, las reuniones serían los exámenes que cuentan con estudiantes que deben rendirlos y el conjunto de restricciones sería que un estudiante no puede tener asignado 2 o más exámenes al mismo tiempo, entre otras, buscando así generar una asignación de horarios a los exámenes tal que se satisfagan lo mejor posible las restricciones. Ésta definición general permite abordar el ETP como un problema de búsqueda ya que bastaría con satisfacer las restricciones duras (ver Tabla~\ref{tab:duras}) del problema como lo sería que un estudiante no tenga 2 exámenes al mismo tiempo, no obstante, las necesidades de las instituciones educacionales van requieren considerar un conjunto de restricciones blandas(ver Tabla~\ref{tab:blandas}), las cuales hacen de este problema uno de optimización por sobre uno de búsqueda.\\
+
+Las variaciones a este problema corresponden a la realidad de cada institución educacional en la que el autor se concentra a la hora de estudiarlo, entre estas se encuentran la implementación de diversas versiones para el mismo examen, de modo tal que un estudiante no tenga 2 exámenes al mismo tiempo y así, mejorar la distribución de los mismos \cite{WOUMANS2016178}, otra variación considera un subconjunto de salas para cada examen donde éste puede ser rendido y consultar a los estudiantes sus preferencias para calendarizar evaluaciones, sin que ésto les garantice que serán calendarizadas en esos horarios \cite{LAPORTE1984351}. Todos estos ajustes hacen de este un problema lleno de variaciones en la práctica (no así en los benchmarks donde se ocupan datasets específicos como por ejemplo el ITC2007 \cite{ITC2007}), más no hay una variación particular en la que la literatura se concentre.\\
+
+Al ser un Timetabling Problem, todos los problemas de esta familia se parecen en cierta medida al ETP, pero los que más parecidos son el Timetabling Course Problem que consta de asignar un conjunto de cursos a un conjunto finito de horarios y salas; y el School Timetabling Problem que consta de asignar un conjunto de distintos recursos (horarios, profesores, estudiantes, salas, etc) a un conjunto de eventos \cite{TAN2021113943}, ambos han sido ampliamente estudiados y sus descubrimientos han aportado mútuamente tanto al ETP como a otros Timetabling Problems.
+
+Para efectos de este documento, se trabajará la siguiente variante: Se cuenta con un conjunto de exámenes y un conjunto de estudiantes que debe rendirlos, el objetivo será asignar la menor cantidad posible de horarios de exámenes tal que ningún estudiante tenga 2 exámenes al mismo tiempo y, en el camino, intentar distribuir los exámenes lo más posible para así aumentar el tiempo entre exámenes de cada estudiante, no obstante, el objetivo principal será disminuir la cantidad de horarios con los cuales llevar a cabo los exámenes.
+
+\section{Estado del Arte} \label{estado}
+
+Las primeras apariciones del ETP en la literatura datan del 1964, donde Broder \cite{10.1145/355586.364824} da una formalización del problema debido a la necesidad de asignar los horarios de los exámenes finales de los cursos de una universidad y propone un modelo matemático para el mismo, también propone un algoritmo aleatorizado de tipo Monte Carlo para encontrar una solución que minimizara la cantidad de conflictos entre estudiantes y sus exámenes, esta solución encontrada si bien no garantizaba ser la mejor, usualmente sería óptima. Ese mismo año Cole \cite{10.1093/comjnl/7.2.117} propone una matriz de conflictos entre exámenes y una serie de restricciones particulares, junto con un algoritmo ``largest degree first: fill from top'' para generar una solución que también sería cercana a la óptima, además su método puede ejecutarse en computadores con poca capacidad de almacenamiento.\\ 
+
+En 1966, Peck \cite{10.1145/365696.365713} propone un algoritmo de particionamiento y coloreo de grafos el cual sólo se encarga de asignar horarios lo mejor posible sin garantizar que un estudiante no tendrá 2 exámenes al mismo tiempo ni considerar otras restricciones. Ya en 1968, Wood \cite{10.1093/comjnl/11.1.41} ideó un algoritmo que fue implementado en su universidad, éste también se basó en la minimización de una matriz de conflictos como la de Cole \cite{10.1093/comjnl/7.2.117}, no obstante, la calidad de la solución que éste entregaba se medía según los criterios de aquella universidad, por otro lado, en caso de que 2 cursos empatasen en su asignación, Wood implementó una estrategia ``look ahead'' para elegir qué examen sería asignado en ese horario, de modo tal que esta decisión no generara problemas en las próximas asignaciones y en caso de no poder entregar una asignación completa, bastaba con asignar manualmente los cursos que no quedaron asignados y echar a andar de nuevo el algoritmo, no obstante, dado el crecimiento exponencial de memoria que sufre al aumentar el tamaño de la entrada, éste algoritmo puede usarse con todos los exámenes de una universidad al mismo tiempo, requiere separar su uso en unidades lógicas como por ejemplo las carreras o departamentos.\\ 
+
+Más adelante, Desroches et. al. \cite{11731709} presentan en 1978 el algoritmo HOREX, el cual es descrito en sus distintas etapas donde usa desde algoritmos de coloreo de grafos hasta programación entera para resolver el problema, resultando ser un algoritmo superior a los anteriores para una cantidad pequeña de horarios disponibles para realizar la asignación, pero no estando a la altura para escenarios más grandes. Un año más tarde White y Chan \cite{155986.1979.11731735} desarrollaron un algoritmo derivado de HOREX para aplicarlo en su universidad, buscando mejorar la satisfacción de restricciones blandas, no obstante, su buen desempeño también se veía restringido a cantidades pequeñas de horarios para realizar la asignación.\\ 
+
+En 1981 Mehta \cite{10.2307/25060145} hizo un método (también para su universidad) cuyo fin era minimizar los conflictos y los casos en que 3 exámenes seguidos eran asignados, utilizando un enfoque de coloreo de grafos y una rutina de ``compresión'' para computar los conflictos que podía generar una asignación y escoger qué horario eliminar de ésta para volver a distribuir los exámenes, sus resultados fueron un gran aporte para demostrar que los ``saturation degree methods'' son las mejores técnicas de coloreo de grafos, respaldando a su vez las técnicas previas y marcando un punto en que encontrar soluciones libres de conflictos para este problema ya era una realidad.\\
+
+Ya en 1984, Laporte et. al. \cite{LAPORTE1984351} presentaron el sistema HORHEC donde por primera vez se planteó la idea del ``costo de aversión'' basado en una lista de preferencias de los estudiantes y el ``costo de proximidad'' basado en la cantidad de horarios entre los cuales son asignados 2 exámenes, éstas restricciones blandas se sumarían a la restricción dura de no asignar más de 1 examen al mismo tiempo para 1 mismo estudiante (entre otras). La estrategia que plantearon se encargaba de probar la generación de asignaciones de horarios buscando minimizar la función objetivo planteada, aumentando la cantidad máxima de horarios a usar según un mínimo y máximo indicados por el usuario, ésta estrategia podría verse como un un polynomially bounded backtracking que permite ``corregir errores anteriores'' de soluciones previas \cite{10.2307/170814}, siendo así de los primeros algoritmos en no presentar una heurística de coloreo de grafos por detrás como los anteriores para resolver el problema.\\
+
+Pese a estos avances, la mayoría de las soluciones propuestas se concentraban en el contexto de la institución educacional particular de los autores, sin que éstas llegasen a ser usadas en otras instituciones con realidades distintas, tampoco se realizaron comparaciones entre éstas y otros enfoques alternativos, en el fondo, la mayoría de autores no estaban al tanto de la existencia de otras soluciones publicadas debido a un muy desorganizado estado del arte \cite{10.2307/170814} hasta que en 1996, Carter et. al. \cite{10.2307/3010580} estudiaron 5 de las estrategias previamente mencionadas concluyendo que ninguna de ellas era sobresaliente para todos los casos en los que fueron probadas, no obstante, introdujeron al estudio de este problema un conjunto de 13 casos de prueba para así realizar benchmarks y dar un primer paso a estandarizar las comparaciones \cite{Qu2009}. Desde entonces, es posible comenzar a organizar de mejor manera las soluciones que se han propuesto.
+
+\subsection*{Técnicas Basadas en Satisfacción de Restricciones}
+
+Debido a la flexibilidad con la que estas técnicas se podían aplicar al ETP, se propusieron métodos de satisfacción de restricciones para resolver el problema, no obstante, debido al crecimiento exponencial de memoria que requieren, en su mayoría sólo podían generar soluciones parciales, que luego requerían ser completadas o mejoradas por otros procedimientos \cite{10.1007/BFb0055888, 10.1007/978-3-540-45157-0_14, ahnkim}, aunque también habían casos en que se ajustaban perfectamente a las necesidades de la universidad donde se implementaban \cite{tacadaograce}. Estas técnicas fueron respaldadas por grandes avances en lenguajes de programación de restricciones, pero no lograron ser un enfoque superior a la hora de aplicarse al problema de manera general, si no más bien, se ajustaban a las realidades de la universidad correspondiente, aunque es importante destacar que para ciertos casos de prueba, logran los mejores resultados \cite{Qu2009}.
+
+\subsection*{Técnicas de Búsqueda Local}
+
+Estas técnicas se guiaban por el uso de una función objetivo que permitía evaluar la calidad de las soluciones generadas y permitían manejar fácilmente las diferentes restricciones de las variantes del ETP. Entre estas podemos encontrar Tabu Search, donde se implementaron funciones objetivo adaptativas \cite{10.1007/3-540-44629-X_7}, búsquedas por fases (en cada fase de búsqueda de la solución se añaden restricciones no consideradas antes) y asignación de prioridades a las restricciones \cite{paquetehmm}.\\ 
+
+Otra técnica usada es Simulated Annealing, la cual por sí sola no generaba soluciones mejores que otros métodos, no obstante, entonces se investigó el usarlo de forma híbrida con backtracking \cite{THOMPSON1998637}, obteniendo resultados mucho mejores e incentivando así el uso de enfoques que usaran esta técnica de forma híbrida. Merlot \cite{10.1007/978-3-540-45157-0_14} reforzó esta idea y realizó un híbrido con técnicas de programación de restricciones, logrando así los mejores resultados conocidos hasta la época y marcando un precedente para los enfoques híbridos a la hora de atacar el ETP.\\
+
+Otros autores enfocaron su investigación en modificar la estructura de los vecindarios de búsqueda del espacio de soluciones a la hora de abordar el ETP , no obstante, el enorme cómputo que requieren las deja muy por detrás de las otras soluciones \cite{Qu2009}
+
+\subsection*{Algoritmos Basados en Población}
+
+Entre los algoritmos basados en población se trabajaron algoritmos de hormigas para resolver el modelo del ETP planteado como un problema de coloreo de grafos \cite{hormigasowo}, sin considerar restricciones blandas ni obtener resultados significativos en comparación con los demás. También se trabajaron algoritmos genéticos y meméticos con el fin de determinar las mejores heurísticas para resolver el problema \cite{10.1007/3-540-44629-X_9, niche, sheibani2002evolutionary}, así como también, encontrar la mejor representación del problema con el fin de mejorar los resultados, no obstante, las soluciones por éste ámbito no destacan tanto como las otras. También se trabajó con Artificial Immune Algorithms \cite{malim2006artificial}, los cuales presentaron los mejores resultados en ciertos casos de prueba, demostrando así el potencial de estos algoritmos para trabajos futuros con ellos \cite{Qu2009}.
+
+\subsection*{Técnicas Multi-Criterio}
+
+Con el fin de cuantificar la calidad de una solución bajo un criterio distinto al de calcular una función objetivo, se plantearon técnicas multi-criterio las cuales \cite{10.1093/comjnl/7.2.117, 10.1007/3-540-44629-X_8}, si bien entregaron buenos resultados en ciertos casos, su aporte al problema fue brindar flexibilidad para determinar la importancia individual de cada restricción con el fin de obtener soluciones deseadas más allá de las que minimizaban una función objetivo particular.
+
+\subsection*{Técnicas Basadas en Grafos}
+
+Distintos autores introdujeron mejoras en las heurísticas de coloreo de grafos para atacar el problema \cite{Burke98asimple, Scheduling_solvingexamination} e integrando técnicas de redes neuronales para generar mejores soluciones \cite{10.1007/11844297_40}, estas técnicas híbridas generaron buenos resultados usando los datasets actuales, por lo que más adelante dan pie al uso de hyperheurísticas más adelante. 
+
+\subsection*{Técnicas de Descomposición y Clustering}
+
+También se trabajó la idea de descomponer el problema en pequeños subproblemas \cite{notfoundxd, 752921} para encontrar soluciones óptimas, no obstante, el gran problema de este enfoque es que no se pueden evaluar restricciones blandas cuando un problema es descompuesto, por lo que no generó mucho impacto pese a lograr uno de los mejores resultados para 1 sólo caso de prueba \cite{burkeadaptative}
+
+\subsection*{Hyperheurísticas}
+
+Dada la dificultad de encontrar meta-heurísticas que se ajusten a las variaciones que puede un ETP particular tanto en sus restricciones blandas~\ref{tab:blandas} y duras~\ref{tab:duras}, por lo que se desarrollaron hyperheurísticas con resultados prometedores para fomentar futuras investigaciones usando esta técnica \cite{prosss}, dando como resultado que para el 2019 se planteara una hyperheurística basada en el algoritmo Great Deluge, cuyos resultados fueron sobresalientes en todos los casos de prueba usados en comparación a otras técnicas \cite{MUKLASON2019647}, posicionándose como una de las mejores técnicas hasta el momento y sentando las hyperheurísticas como las bases para trabajos futuros.
+
+\begin{table}[]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lp{13.45cm}}
+\hline
+   & Primary hard constraints \\ \specialrule{.1em}{.05em}{.05em} 
+1. & No exams with common resources (e.g. students) assigned simultaneously \\
+2. & Resources need to be sufficient (i.e. the number of students assigned to a room needs to be below the room capacity, enough rooms are needed for all of the exams) \\ \hline
+\end{tabular}%
+}
+\caption{Principales restricciones duras en ETP \cite{Qu2009}}
+\label{tab:duras}
+\end{table}
+
+\begin{table}[]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lp{13.45cm}}
+\hline
+ 	& Primary soft constraints \\ \specialrule{.1em}{.05em}{.05em} 
+1. 	& Spread conflicting exams as evenly as possible, or not in x consecutive timeslots or days. \\
+2. 	& Groups of exams required to take place at the same time, on the same day or at one location. \\
+3. 	& Exams to be consecutive. \\
+4. 	& Schedule all exams, or largest exams, as early as possible. \\
+5. 	& An ordering (precedence) of exams needs to be satisfied. \\
+6. 	& Limited number of students and/or exams in any timeslot. \\
+7. 	& Time requirements (e.g. exams (not) to be in certain timeslots). \\
+8. 	& Conflicting exams on the same day to be located nearby. \\
+9. 	& Exams may be split over similar locations. \\
+10. & Only exams of the same length can be allocated into the same room. \\
+11. & Resource requirements (e.g. room facility). \\ \hline
+\end{tabular}%
+}
+\caption{Principales restricciones blandas en ETP \cite{Qu2009}}
+\label{tab:blandas}
+\end{table}
+
+
+\section{Modelo Matemático} \label{modelo}
+
+Con el fin de resolver la variante del ETP a trabajar, se propone un modelo matemático que considera un costo de proximidad entre exámenes \cite{LAPORTE1984351} y que busca minimizar la cantidad de horarios \cite{WIJGERS}\\
+
+\textbf{Parámetros:}
+
+\begin{itemize}
+	\item[$\sq$] $E$: Cantidad de exámenes, con $E \geq 1$
+	\item[$\sq$] $L$: Cantidad máxima de horarios, con $L \geq 1$
+	\item[$\sq$] $e_i$: Cantidad de estudiantes que deben rendir el examen $i$, con $1 \leq i \leq E$
+	\item[$\sq$] $C_{ij}$: Cantidad de estudiantes que deben rendir el examen $i$ y $j$, con ($1 \leq i < j \leq E$)
+	\item[$\sq$] $w_{s}$: Costo de proximidad entre exámenes separados por $s$ horarios
+	\begin{itemize}
+		\item[] Se define según Laporte \cite{LAPORTE1984351} como: $w_{1} = 16, w_{2} = 8, w_{3} = 4, w_{4} = 2, w_{5} = 1$ 
+	\end{itemize}
+
+\end{itemize}
+
+\textbf{Variables:}
+\begin{itemize}
+	\item[$\sq$] $x_{il} =
+					\left\{
+						\begin{array}{ll}
+							1  & \mbox{si el examen } i \text{ es asignado en el horario } l \text{, con } \text{, con } 1 \leq i \leq E \text{ y } 1 \leq l \leq L \\
+							0 & \mbox{en cualquier otro caso}
+						\end{array}
+					\right.$
+	\item[$\sq$] $t_{l} =
+					\left\{
+						\begin{array}{ll}
+							1  & \mbox{si el horario } l \text{ es usado en la solución, con } 1 \leq l \leq L \\
+							0 & \mbox{en cualquier otro caso}
+						\end{array}
+					\right.$
+
+	\item[$\sq$] $M$: Un número arbitrariamente grande ($M > c_{ij}; i, j = 1, \ldots ,E$, con $i < j$)
+\end{itemize}
+
+\textbf{Función Objetivo:}
+
+\begin{equation} \label{eq:1}
+	\text{min } F: \sum_{l=1}^{L} \sum_{s=1}^{5} \sum_{i=1}^{E} \sum_{j=1}^{E} (x_{il}x_{j,l-s} + x_{il}x_{j,l+s}) c_{ij} w_{s} + \sum_{l=1}^{L} t_{l}
+\end{equation}
+
+\textbf{Restricciones:}
+
+\begin{equation} \label{eq:2}
+	x_{il} + x_{jl} \leq 2 - \frac{c_{ij}}{M} \quad \forall i, j : i<j \wedge i, j \in \{1, \ldots, E\} \wedge l \in \{1, \ldots, L\}
+\end{equation}
+
+\begin{equation} \label{eq:3}
+	\sum_{l=1}^{L} x_{il}t_l = 1 \quad \forall i \in \{1, \ldots, E\}
+\end{equation}
+
+\begin{equation} \label{eq:4}
+	\sum_{i=1}^{E} \sum_{l=1}^{L} x_{il}t_l \leq L
+\end{equation}
+
+\textbf{Naturaleza de las Variables:}
+\begin{equation*}
+	x_{ij} \in \{1, 0\}
+\end{equation*}
+
+\begin{equation*}
+	t_{l} \in \{1, 0\}
+\end{equation*}
+
+\begin{equation*}
+	M \in \mathbb N
+\end{equation*}
+
+\textbf{Detalles del Modelo:}
+
+\begin{itemize}
+	\item[$\sq$] Dado que la minimización de los horarios a usar para la asignación es más importante que minimizar el costo de proximidad entre exámenes, el modelo plantea el parámetro $L$ para asignar el máximo de horarios que la institución educacional desea usar, el valor común para este parámetro debería ser $E$ poniéndose en el caso de que cada examen se asigne en un horario distinto y continuo.
+
+	\item[$\sq$] La ecuación (\ref{eq:1}) es la función objetivo que mide la calidad de la solución y que el modelo busca minimizar, la primera parte de la sumatoria cuantifica el costo de proximidad entre exámenes mientras que la segunda parte busca minimizar el total de horarios a usar.
+	
+	\item[$\sq$] La ecuación (\ref{eq:2}) busca que si un estudiante debe rendir los exámenes $i$ y $j$, entonces esos exámenes no pueden ser asignados en el mismo horario, la variable $M$ está para que si $c_{ij} > 0$ entonces la restricción sea equivalente a $x_{il} + x_{jl} \leq 1$ \cite{LAPORTE1984351}.
+
+	\item[$\sq$] La ecuación (\ref{eq:3}) se asegura que un examen pertenezca a sólo 1 horario de los que se usarán en la solución (por eso considera $t_{l}$).
+
+	\item[$\sq$] La ecuación (\ref{eq:4}) se asegura que no se asignen más de $L$ horarios (el máximo indicado por la institución educacional), para así evitar que se asigne una cantidad enorme de horarios con el fin de minimizar el costo de proximidad entre exámenes.
+
+	\item[$\sq$] El espacio de búsqueda de este modelo matemático equivale a todas las combinaciones posibles de valores que se pueden realizar con las variables, lo que se expresa como $2^{(E + 1)L}$ y que determina el crecimiento exponencial del espacio de búsqueda en función de la cantidad de exámenes $E$ a asignar y la cantidad máxima de horarios $L$ que la institución educacional determina usar.
+\end{itemize}
+
+\section{Conclusiones} \label{conclusiones}
+
+El ETP es un problema arduamente estudiado gracias a su importancia e impacto en las instituciones educacionales, los avances en su resolución se traducen en mejores condiciones para los estudiantes a la hora de rendir sus exámenes y mejores planificaciones para la institución, no obstante, las distintas realidades de éstas hacen que los investigadores se concentren en resolver distintas variantes generando así soluciones no aplicables a todas las instituciones. Pese a esto, las distintas técnicas implementadas han permitido ahondar en cómo cada una se puede ajustar para obtener mejores resultados en la institución particular donde el autor se centra, pero al mismo tiempo no suelen ser tan buenas cuando se aplican de manera general. Esto se visualiza en como los parámetros de de la mayoría de técnicas se pueden ajustar para ser excelentes en ciertos casos o en como las técnicas exactas funcionan bien para instituciones que requieren calendarizar pocos exámenes, sin lograr ser las mejores a la hora de hacer benchmarks estandarizados, ante este escenario, las técnicas basadas en híbridos con hyperheurísticas se posicionan como las técnicas más prometedoras para atacar este problema. A futuro se plantea ahondar en la investigación basada en técnicas híbridas con hyperheurísticas que se ejecuten en paralelo utilizando CUDA \cite{cuda}, para así estudiar espacios de soluciones en paralelo con el fin de acelerar el proceso.
+
+
+\section{Bibliografía}
+\bibliographystyle{plain}
+\bibliography{Referencias}
+
+\end{document} 
