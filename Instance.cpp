@@ -109,6 +109,7 @@ void Instance::showConflictMatrix() {
 }
 
 Instance::Instance(std::string instanceName) {
+	instancesDir = INSTANCES_DIRECTORY;
 	name = instanceName;
 	E = L = 0;
 }

@@ -5,12 +5,14 @@
 using namespace std;
 
 int main(int argc, char const *argv[]) {
-	/*
-	ios_base::sync_with_stdio(false); 
-	cin.tie(NULL);
-	cout.setf(ios::fixed);
-	cout.precision(5);
-*/
+	if(argc < 3) {
+		cout << "[Main] " << "Error: Missing parameters" << '\n';
+		cout << "[Main] " << "Execution example: ./ETPSolver InstanceName 1" << '\n';
+		return 0;
+	}
+
+	bool showLogs = (bool) stoi(argv[2]);
+
 	Instance etp(argv[1]);
 	etp.loadExams();
 	etp.genConflictMatrix();
@@ -18,7 +20,7 @@ int main(int argc, char const *argv[]) {
 	//etp.showConflictMatrix();
 	//etp.showStudentExams();
 
-	FcSolver solver(&etp);
+	FcSolver solver(&etp, showLogs);
 	solver.doBackTracking(1);
 
 	return 0;
