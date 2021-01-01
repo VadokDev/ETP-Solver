@@ -8,9 +8,11 @@ typedef vector<vi> vii;
 
 FcSolver::FcSolver(Instance* instance, bool showLogs) {
 	logs = showLogs;
+	totalBests = 0;
 	totalSols = 0;
 	inst = instance;
 	bestSolPenalty = INT_MAX;
+	maxSlots = 1;
 	sol.resize(inst->E + 1);
 	sol.resize(inst->E + 1);
 	bestSol.resize(inst->E + 1);
@@ -48,11 +50,11 @@ int FcSolver::doForwardChecking(int exm) {
 		}
 
 		// Contar la cantidad de valores disponibles en el dominio de los exámenes
-		remain += count(D[i].begin(), D[i].end(), 0);
+		remain += count(D[i].begin(), D[i].begin() + maxSlots + 1, 0);
 	}
 
 	if(logs) {
-		cout << "[Forward Cheking] " << "Final Domains: " << '\n';
+		cout << "[Forward Cheking] " << "Final Domains: " << remain << '\n';
 		showDomains();
 		cout << "[Forward Cheking] " << "End Forward Checking from Exam: " << exm << '\n';  
 	}
@@ -63,7 +65,7 @@ int FcSolver::doForwardChecking(int exm) {
 
 void FcSolver::resetDomains(int actualExm) {
 	// Reiniciar los dominios de los exámenes posteriores al actual
-	for (int i = actualExm + 1; i < inst->L + 1; ++i) {
+	for (int i = actualExm + 1; i < inst->E + 1; ++i) {
 		replace(D[i].begin(), D[i].end(), actualExm, 0);
 	}
 }
@@ -76,7 +78,7 @@ void FcSolver::checkSolution() {
 	if(bestSolPenalty > penalty) {
 		totalSols++;
 
-		for (int i = 1; i < inst->L + 1; ++i) {
+		for (int i = 1; i < maxSlots + 1; ++i) {
 			bestSol[i] = sol[i];
 			bestSolPenalty = penalty / inst->S;
 		}
@@ -162,7 +164,7 @@ void FcSolver::showDomains() {
 	cout << "[Domains] " << "Showing actual valid domain for all variables" << '\n';
 	for (int i = 1; i < inst->E + 1; ++i) {
 		cout << "[Domains] " << "Examen [" << i << "]: ";
-		for (int j = 1; j < inst->E + 1; ++j) {
+		for (int j = 1; j < maxSlots + 1; ++j) {
 			if(!D[i][j]) {
 				cout << j;
 				if(j != inst->E) {
@@ -175,11 +177,19 @@ void FcSolver::showDomains() {
 	}
 }
 
+void FcSolver::doMaxTimeSlotsAdjustment() {
+	for (maxSlots = 18; maxSlots < inst->E + 1; ++maxSlots) {
+		cout << "[TimeSlots] Solving with " << maxSlots << " timeslots" << '\n';
+		doBackTracking(1);
+		resetDomains(0);
+	}
+}
+
 void FcSolver::doBackTracking(int exm) {
 	if(logs && exm == 1) cout << "[Backtracking] " << "Starting" << '\n';
 
 	// Evaluamos cada posible horario a usar para el examen actual
-	for (int slot = 1; slot < inst->L + 1; ++slot) {
+	for (int slot = 1; slot < maxSlots + 1; ++slot) {
 		// Si el horario no está en el dominio de horarios posibles para el examen actual, se sigue
 		if(D[exm][slot])
 			continue;

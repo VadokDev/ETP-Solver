@@ -21,7 +21,8 @@ int main(int argc, char const *argv[]) {
 	//etp.showStudentExams();
 
 	FcSolver solver(&etp, showLogs);
-	solver.doBackTracking(1);
+	solver.doMaxTimeSlotsAdjustment();
+	//solver.doBackTracking(1);
 
 	return 0;
 }

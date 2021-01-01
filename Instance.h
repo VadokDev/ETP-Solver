@@ -17,7 +17,7 @@ class Instance {
 		vii sExams;			// Lista de exámenes de cada estudiante			
 		vii cMatrix;		// Matriz de conflictos entre exámenes que comparten estudiantes
 		int E;				// Cantidad de exámenes
-		int L;				// Cantidad de horarios (por defecto, es equivalente a la cantidad de exámenes)
+		int L;				// Cantidad de máxima de exámenes que un estudiante debe rendir
 		int S;				// Cantidad de estudiantes
 		
 		void loadExams();

@@ -13,6 +13,8 @@ class FcSolver {
 		vi bestSol;					// Mejor solución encontrada durante el proceso
 		int bestSolPenalty;			// Penalización asociada a la mejor solución encontrada
 		int totalSols;				// Cantidad de soluciones válidas encontradas
+		int totalBests;				// Cantidad de soluciones que mejoran la solución anterior
+		int maxSlots;				// Cantidad de slots a usar
 		bool logs;					// Mostrar o no el proceso de búsqueda de soluciones
 
 	public:
@@ -23,6 +25,7 @@ class FcSolver {
 		int doForwardChecking(int exm);
 		int examsPenalization(int e1, int e2);
 		int getSolutionPenalty();
+		void doMaxTimeSlotsAdjustment();
 		void resetDomains(int actualExm);
 		void checkSolution();
 		void writeSolution();
