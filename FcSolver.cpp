@@ -87,6 +87,7 @@ void FcSolver::checkSolution() {
 
 		cout << "penalización: " << penalty << '\n';
 		cout << "promedio: " << penalty / inst->S << '\n';
+		writeSolution();
 	}
 }
 
@@ -111,6 +112,28 @@ void FcSolver::showSolution() {
 
 		cout << '\n';
 	}
+}
+
+void FcSolver::writeSolution() {
+	ofstream resFile;
+	ofstream penFile;
+	ofstream solFile;
+
+	resFile.open(inst->name + ".res");
+	resFile << maxSlots << '\n';
+	resFile.close();
+
+	penFile.open(inst->name + ".pen");
+	penFile << bestSolPenalty << '\n';
+	penFile.close();
+
+	solFile.open(inst->name + ".sol");
+
+	for (int i = 1; i < inst->E + 1; ++i) {
+		solFile << i << " " << sol[i] << '\n';
+	}
+
+	solFile.close();
 }
 
 int FcSolver::getSolutionPenalty() {
@@ -178,7 +201,7 @@ void FcSolver::showDomains() {
 }
 
 void FcSolver::doMaxTimeSlotsAdjustment() {
-	for (maxSlots = 18; maxSlots < inst->E + 1; ++maxSlots) {
+	for (maxSlots = 1; maxSlots < inst->E + 1; ++maxSlots) {
 		cout << "[TimeSlots] Solving with " << maxSlots << " timeslots" << '\n';
 		doBackTracking(1);
 		resetDomains(0);
