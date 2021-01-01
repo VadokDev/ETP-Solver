@@ -20,6 +20,7 @@ int main(int argc, char const *argv[]) {
 	//etp.showConflictMatrix();
 	//etp.showStudentExams();
 
+	cout << etp.L << '\n';
 	FcSolver solver(&etp, showLogs);
 	solver.doMaxTimeSlotsAdjustment();
 	//solver.doBackTracking(1);

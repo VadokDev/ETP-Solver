@@ -12,7 +12,7 @@ void Instance::loadExams() {
 	}
 
 	while(exmFile.getline(buff, 255)) {
-		if(isdigit(buff[0])) L = ++E;
+		if(isdigit(buff[0])) E++;
 	}
 
 	exmFile.close();
@@ -44,13 +44,15 @@ void Instance::loadStudents() {
 		lastStu = stu;
 		stu = atoi(&buff[1]);
 
-		//cout << "Stu: " << stu << " " << exm << '\n';
 		if(exm > E) {
-			//cout << "exm > E " << exm << '\n';
 			exm = 1;
  		}
+ 		
 		if(lastStu != stu) {
 			vi studentExams(cTotal);
+			
+			if(cTotal > L)
+				L = cTotal;
 
 			for (int i = 0; i < cTotal; ++i) {
 				for (int j = 0; j < cTotal; ++j) {
@@ -82,7 +84,9 @@ void Instance::loadStudents() {
 	}
 
 	sExams.push_back(studentExams);
-	cTotal = 0;
+	
+	if(cTotal > L)
+		L = cTotal;
 
 	stuFile.close();
 	S = stu;
