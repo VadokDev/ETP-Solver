@@ -17,13 +17,12 @@ int main(int argc, char const *argv[]) {
 	etp.loadExams();
 	etp.genConflictMatrix();
 	etp.loadStudents();
+	
 	//etp.showConflictMatrix();
 	//etp.showStudentExams();
 
-	cout << etp.L << '\n';
 	FcSolver solver(&etp, showLogs);
 	solver.doMaxTimeSlotsAdjustment();
-	//solver.doBackTracking(1);
 
 	return 0;
 }
