@@ -5,7 +5,7 @@ from random import randint, sample
 
 if len(sys.argv) < 4:
 	print("[Error] Missing parameters, usage: python instanceGenerator.py [instanceName] [exams] [students]")
-	print("[Error] Example:  python instanceGenerator.py Prueba2 15 100")
+	print("[Error] Example: python instanceGenerator.py Prueba2 15 100")
 	exit(0)
 
 instancesDir = "instances/"

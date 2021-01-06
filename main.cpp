@@ -13,6 +13,7 @@ int main(int argc, char const *argv[]) {
 
 	bool showLogs = (bool) stoi(argv[2]);
 
+	// Cargar instancia
 	Instance etp(argv[1]);
 	etp.loadExams();
 	etp.genConflictMatrix();
@@ -21,6 +22,7 @@ int main(int argc, char const *argv[]) {
 	//etp.showConflictMatrix();
 	//etp.showStudentExams();
 
+	// Resolver instancia
 	FcSolver solver(&etp, showLogs);
 	solver.doMaxTimeSlotsAdjustment();
 

@@ -9,7 +9,8 @@ El repositorio cuenta con todo el trabajo desarrollado a lo largo de la investig
 * [estado-del-arte](./estado-del-arte): Carpeta con el código fuente en LaTeX del paper derivado de la investigación del Estado del Arte actual del Examination Timetabling Problem
 * [paper-final](./paper-final): Carpeta con el código fuente en LaTeX del paper final, el cual contiene la investigación del paper anterior más los resultados de una propuesta de solución al problema investigado
 * [instances](./instances): Carpeta con instancias de prueba del ETP
-* [./](./): Código fuente de la solución propuesta, el cual consta de una implementación de Backtracking + FC para resolver el ETP
+* [solutions](./solutions): Carpeta con soluciones a algunas de las instancias de prueba del ETP
+* El directorio raíz cuenta con el código fuente de la solución propuesta, éste consta de una implementación de Backtracking + FC para resolver el ETP, además, se incluye un generador de instancias en Python.
 
 ## Instrucciones de Ejecución
 
@@ -19,4 +20,10 @@ El repositorio cuenta con todo el trabajo desarrollado a lo largo de la investig
 * Para eliminar los residuos de compilación, así como el programa, ejecutar `make clean`
 * Activar los logs para ver el procedimiento completo
 * Nota: No ejecutar instancias muy grandes pues éstas tardarán demasiado
+
+## Instrucciones para el Generador de Instancias
+
+* Ejecutar el comando `python instanceGenerator.py [instanceName] [exams] [students]`
+* Ejemplo de ejecución `python instanceGenerator.py Prueba2 15 100`
+* Nota: El programa asigna un máximo de exámenes por estudiante igual a la mitad del total de exámenes, para evitar obligar al programa a usar 1 horario por examen como solución
 

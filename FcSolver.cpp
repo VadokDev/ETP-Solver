@@ -8,6 +8,7 @@ typedef vector<vi> vii;
 
 FcSolver::FcSolver(Instance* instance, bool showLogs) {
 	bestSolPenalty = FLT_MAX;
+	solutionsDir = SOLUTIONS_DIRECTORY;
 	inst = instance;
 	logs = showLogs;
 
@@ -27,9 +28,6 @@ FcSolver::FcSolver(Instance* instance, bool showLogs) {
 FcSolver::~FcSolver() { }
 
 int FcSolver::doForwardChecking(int exm) {
-	// Cantidad restante de horarios posibles en el dominio de todos los exámenes, a partir del examen actual
-	int remain = 0;
-
 	if(logs) cout << "[Forward Checking] " << "Starting Forward Checking from Exam: " << exm << '\n';  
 	
 	// Avanzar en el espacio de soluciones para ir descartando
@@ -55,13 +53,13 @@ int FcSolver::doForwardChecking(int exm) {
 	}
 
 	if(logs) {
-		cout << "[Forward Checking] " << "Final Domains: " << remain << '\n';
+		cout << "[Forward Checking] " << "Final domains (no empty domains were generated):" << '\n';
 		showDomains();
 		cout << "[Forward Checking] " << "End Forward Checking from Exam: " << exm << '\n';  
 	}
 
-	// Retornar tamaño del dominio de horarios disponibles para los exámenes
-	return 1;//remain;
+	// Retornar 1 para indicar que no quedaron dominios de variables vacíos
+	return 1;
 }
 
 void FcSolver::resetDomains(int actualExm) {
@@ -84,11 +82,9 @@ void FcSolver::checkSolution() {
 			bestSolPenalty = penalty / inst->S;
 		}
 
-		showSolution();
-
-		cout << "penalización: " << penalty << '\n';
-		cout << "promedio: " << penalty / inst->S << '\n';
 		writeSolution();
+		showSolution();
+		cout << "penalización: " << penalty / inst->S<< '\n';
 	}
 }
 
@@ -122,24 +118,23 @@ void FcSolver::writeSolution() {
 
 	// Si se ha encontrado una solución mejor que la anterior, se alade al archivo sin sobreescribirlo
 	if(totalSols > 1) {
-		resFile.open(inst->name + ".res", ofstream::app);
-		penFile.open(inst->name + ".pen", ofstream::app);
-		solFile.open(inst->name + ".sol", ofstream::app);
+		resFile.open(solutionsDir + inst->name + ".res", ofstream::app);
+		penFile.open(solutionsDir + inst->name + ".pen", ofstream::app);
+		solFile.open(solutionsDir + inst->name + ".sol", ofstream::app);
 		resFile << "========================END SOLUTION" << '\n';
 		penFile << "========================END SOLUTION" << '\n';
 		solFile << "========================END SOLUTION" << '\n';
 	} else {
-		resFile.open(inst->name + ".res");
-		penFile.open(inst->name + ".pen");
-		solFile.open(inst->name + ".sol");
+		resFile.open(solutionsDir + inst->name + ".res");
+		penFile.open(solutionsDir + inst->name + ".pen");
+		solFile.open(solutionsDir + inst->name + ".sol");
 	}
 
 	resFile << maxSlots << '\n';
-	resFile.close();
-
 	penFile << bestSolPenalty << '\n';
+	
+	resFile.close();
 	penFile.close();
-
 
 	for (int i = 1; i < inst->E + 1; ++i) {
 		solFile << i << " " << sol[i] << '\n';
@@ -156,16 +151,10 @@ long double FcSolver::getSolutionPenalty() {
 			return this->compareExams(e1, e2);
 		});
 		
-/*
-		cout << "Student " << i << " exams: ";
-		for (size_t j = 0; j < inst->sExams[i].size(); ++j) {
-			cout << inst->sExams[i][j] << " ";
-
-		}
-		cout << '\n';
-*/
-		for (size_t j = 1; j < inst->sExams[i].size(); ++j) {
-			penaltyTotal += examsPenalization(inst->sExams[i][j - 1], inst->sExams[i][j]);
+		for (size_t j = 0; j < inst->sExams[i].size() - 1; ++j) {
+			for (size_t k = j + 1; k < inst->sExams[i].size(); ++k) {
+				penaltyTotal += examsPenalization(inst->sExams[i][j], inst->sExams[i][k]);
+			}
 		}
 		
 

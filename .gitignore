@@ -1,4 +1,6 @@
 ETP-v3/
+ETPSolver
+*.o
 
 ## Core latex/pdflatex auxiliary files:
 *.aux

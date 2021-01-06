@@ -11,14 +11,14 @@ typedef std::vector<vi> vii;
 
 class Instance {
 	public:
-		std::string name;	// Nombre de la instancia a resolver
-		std::string instancesDir;
+		std::string name;			// Nombre de la instancia a resolver
+		std::string instancesDir;	// Directorio con las soluciones encontradas
 
-		vii sExams;			// Lista de exámenes de cada estudiante			
-		vii cMatrix;		// Matriz de conflictos entre exámenes que comparten estudiantes
-		int E;				// Cantidad de exámenes
-		int L;				// Cantidad de máxima de exámenes que un estudiante debe rendir
-		int S;				// Cantidad de estudiantes
+		vii sExams;					// Lista de exámenes de cada estudiante			
+		vii cMatrix;				// Matriz de conflictos entre exámenes que comparten estudiantes
+		int E;						// Cantidad de exámenes
+		int L;						// Cantidad de máxima de exámenes que un estudiante debe rendir
+		int S;						// Cantidad de estudiantes
 		
 		void loadExams();
 		void genConflictMatrix();
