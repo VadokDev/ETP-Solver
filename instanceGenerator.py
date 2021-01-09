@@ -8,7 +8,7 @@ if len(sys.argv) < 4:
 	print("[Error] Example: python instanceGenerator.py Prueba2 15 100")
 	exit(0)
 
-instancesDir = "instances/"
+instancesDir = "test/"
 
 instanceName = sys.argv[1]
 exams = int(sys.argv[2])
@@ -24,7 +24,7 @@ for i in range(1, exams + 1):
 	exmFile.write(str(i) + " " + str(randint(1, students)) + '\n')
 
 for i in range(1, students + 1):
-	studentExams = sample(range(1, exams + 1), randint(1, exams / 2))
+	studentExams = sample(range(1, exams + 1), randint(1, round(exams / 2)))
 	studentExams.sort()
 	for j in studentExams:
 		stuFile.write("s" + str(i) + " " + str(j) + '\n')

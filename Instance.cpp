@@ -41,6 +41,7 @@ void Instance::loadStudents() {
 	cin.rdbuf(stuFile.rdbuf());
 
 	while(cin >> buff >> exm) {
+		A++;
 		lastStu = stu;
 		stu = atoi(&buff[1]);
 
@@ -115,7 +116,7 @@ void Instance::showConflictMatrix() {
 Instance::Instance(std::string instanceName) {
 	instancesDir = INSTANCES_DIRECTORY;
 	name = instanceName;
-	E = L = 0;
+	S = A = L = E = 0;
 }
 
 Instance::~Instance() {

@@ -12,7 +12,7 @@ El repositorio cuenta con todo el trabajo desarrollado a lo largo de la investig
 * [solutions](./solutions): Carpeta con soluciones a algunas de las instancias de prueba del ETP
 * El directorio raíz cuenta con el código fuente de la solución propuesta, éste consta de una implementación de Backtracking + FC para resolver el ETP, además, se incluye un generador de instancias en Python.
 
-## Instrucciones de Ejecución
+## Instrucciones la Ejecución del ETPSolver
 
 * Compilar el ETPSolver con `make`
 * Ejecutar con `./ETPSolver [nombreInstancia] [1 | 0 logs]`

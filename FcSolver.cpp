@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <sys/time.h>
 #include "FcSolver.h"
 
 using namespace std;
@@ -13,6 +14,10 @@ FcSolver::FcSolver(Instance* instance, bool showLogs) {
 	logs = showLogs;
 
 	totalSols = 0;
+	totalBests = 0;
+	totalSteps = 0;
+	totalChecks = 0;
+	totalRemoved = 0;
 	maxSlots = 1;
 	minSlotsFound = false;
 
@@ -37,14 +42,19 @@ int FcSolver::doForwardChecking(int exm) {
 			// Descomentar para mostrar los dominios durante el filtrado
 			// showDomains();
 		}
-		
+
 		// Si el examen tiene conflicto con el examen actual,
 		// entonces debe eliminarse el horario del espacio,
 		// de soluciones del examen, para cumplir la restricción dura.
-
-		if(inst->cMatrix[exm][i] && !D[i][sol[exm]]) {
-			D[i][sol[exm]] = exm;
-			if(logs) cout << "[Forward Checking] " << "Removed slot " << sol[exm] << " from Exam " << i << " by Exam " << exm << '\n';
+		
+		// No revisar si el horario ya fue removido del examen
+		if(!D[i][sol[exm]]) {
+			totalChecks++;
+			if(inst->cMatrix[exm][i]) {
+				totalRemoved++;
+				D[i][sol[exm]] = exm;
+				if(logs) cout << "[Forward Checking] " << "Removed slot " << sol[exm] << " from Exam " << i << " by Exam " << exm << '\n';
+			}
 		}
 
 		// Contar la cantidad de valores disponibles en el dominio de los exámenes
@@ -73,18 +83,18 @@ void FcSolver::checkSolution() {
 	// Calcular la penalización de la solución actual
 	long double penalty = getSolutionPenalty();
 
+	totalSols++;
 	// Reemplazar la solución en caso de ser mejor
 	if(bestSolPenalty > penalty) {
-		totalSols++;
-
+		totalBests++;
 		for (int i = 1; i < maxSlots + 1; ++i) {
 			bestSol[i] = sol[i];
-			bestSolPenalty = penalty / inst->S;
+			bestSolPenalty = penalty / (long double) inst->S;
 		}
 
 		writeSolution();
 		showSolution();
-		cout << "penalización: " << penalty / inst->S<< '\n';
+		cout << "penalización: " << bestSolPenalty << '\n';
 	}
 }
 
@@ -130,8 +140,8 @@ void FcSolver::writeSolution() {
 		solFile.open(solutionsDir + inst->name + ".sol");
 	}
 
-	resFile << maxSlots << '\n';
-	penFile << bestSolPenalty << '\n';
+	resFile << (long double) maxSlots << '\n';
+	penFile << (long double) bestSolPenalty << '\n';
 	
 	resFile.close();
 	penFile.close();
@@ -183,6 +193,29 @@ bool FcSolver::compareExams(int e1, int e2) {
 	return sol[e1] < sol[e2];
 }
 
+void FcSolver::writeStatsToJson() {
+	ofstream jsonFile;
+	jsonFile.open(solutionsDir + inst->name + ".json");
+    jsonFile.setf(ios::fixed);
+    jsonFile.precision(4);
+	jsonFile << "{" << '\n'
+		<< "     \"name\": " 	<< "\"" << inst->name << "\"" 	<< "," << '\n'
+		<< "     \"students\": " 		<< inst->S				<< "," << '\n'
+		<< "     \"assignements\": " 	<< inst->A				<< "," << '\n'
+		<< "     \"maxAssignements\": "<< inst->L				<< "," << '\n'
+		<< "     \"exams\": " 			<< inst->E				<< "," << '\n'
+		<< "     \"timeslots\": " 		<< maxSlots				<< "," << '\n'
+		<< "     \"penalization\": "	<< bestSolPenalty		<< "," << '\n'
+		<< "     \"iterations\": " 		<< totalSteps			<< "," << '\n'
+		<< "     \"checks\": " 			<< totalChecks			<< "," << '\n'
+		<< "     \"removed\": " 		<< totalRemoved			<< "," << '\n'
+		<< "     \"solutions\": " 		<< totalSols			<< "," << '\n'
+		<< "     \"bestSolutions\": "	<< totalBests			<< "," << '\n'
+		<< "     \"time\": " 			<< totalTime			<< '\n'
+		<< "}" << '\n';
+	jsonFile.close();
+}
+
 void FcSolver::showDomains() {
 	// Iterar por los horarios válidos que se pueden asignar a los exámenes
 	cout << "[Domains] " << "Showing actual valid domain for all variables" << '\n';
@@ -202,12 +235,18 @@ void FcSolver::showDomains() {
 }
 
 void FcSolver::doMaxTimeSlotsAdjustment() {
+    struct timeval start, end;		// Marcas de tiempo
+    gettimeofday(&start, 0);	
 	// Explorar el espacio de búsqueda aumentando los slots hasta encontrar la mínima cantidad necesaria
 	for (maxSlots = inst->L; (maxSlots < inst->E + 1) && !minSlotsFound; ++maxSlots) {
 		cout << "[TimeSlots] Solving with " << maxSlots << " timeslots" << '\n';
 		doBackTracking(1);
 		resetDomains(0);
 	}
+    gettimeofday(&end, 0);
+    long seconds = end.tv_sec - start.tv_sec;
+    long microseconds = end.tv_usec - start.tv_usec;
+    totalTime = seconds + microseconds*1e-6;
 }
 
 void FcSolver::doBackTracking(int exm) {
@@ -215,6 +254,7 @@ void FcSolver::doBackTracking(int exm) {
 
 	// Evaluamos cada posible horario a usar para el examen actual
 	for (int slot = 1; slot < maxSlots + 1; ++slot) {
+		totalSteps++;
 		// Si el horario no está en el dominio de horarios posibles para el examen actual, se sigue
 		if(D[exm][slot])
 			continue;

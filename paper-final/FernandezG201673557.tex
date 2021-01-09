@@ -8,7 +8,7 @@
 \usepackage{ctable} % for \specialrule command
 \usepackage[top=3cm,bottom=3cm,left=3.5cm,right=3.5cm,footskip=1.5cm,headheight=1.5cm,headsep=.5cm,textheight=3cm]{geometry}
 \usepackage{hyperref}
-
+\usepackage[ruled,vlined]{algorithm2e}
 
 \usepackage{etoolbox}
 \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
@@ -242,11 +242,90 @@ Con el fin de resolver la variante del ETP a trabajar, se propone un modelo mate
 Representaci\'on de \textbf{soluciones} (arreglos, matrices, etc.). En caso de t\'ecnicas completas indicar variables y dominios. Incluir justificaci\'on y ejemplos para mayor claridad.
 
 \section{Descripci\'on del algoritmo}
+
+Para llevar a cabo la resolución del problema, se implementó un algoritmo de búsqueda completa con Forward Checking \cite{forwardchecking}. El algoritmo consiste en fijar una cantidad de horarios a asignar entre el total de exámenes y, en caso de detectar que no es posible generar una calendarización válida con la cantidad de horarios fijadas, repite el proceso considerando un horario extra. Cada vez que se asigna un horario a un examen, se lleva a cabo un filtro en los posibles horarios a asignar de los exámenes posteriores, es decir, se aplica arco-consistencia sin propagación entre la solución parcial y los dominios de los exámenes restantes. Si durante éste proceso un examen queda sin horarios disponibles para asignarle (vale decir, su dominio queda vacío), entonces se vuelven a agregar los horarios filtrados previamente y se intenta asignar el siguiente horario disponible al examen anterior, repitiendo el proceso. Cuando la cantidad de horarios a asignar es suficiente como para encontrar una calendarización válida, el algoritmo toma esa cantidad como la mínima necesaria para resolver la instancia, y sobre ella intenta minimizar la penalización promedio asociada al esparcimiento de los exámenes. 
+
+
+El algoritmo recorre 
 C\'omo fue implementada la soluci\'on. Interesa la implementaci\'on particular m\'as que el algoritmo gen\'erico, es decir, si se tiene que implementar SA, lo que se espera es que se explique en pseudoc\'odigo la estructura
 general y en p\'arrafos explicativos c\'omo fue implementada cada parte para su problema particular. Si
 se utilizan operadores/movimientos se debe justificar por qu\'e se utilizaron dichos operadores/movimientos. 
 En caso de una t\'ecnica completa, describir detalles relevantes del proceso, si se utiliza recursi\'on o no, explicar c\'omo se van construyendo soluciones, cu\'ando se revisan restricciones, c\'omo se registran conflictos, etc. En este punto no se espera que se incluya c\'odigo, eso va aparte.
 
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\SetKwFunction{algo}{algo}
+\SetKwFunction{doBackTracking}{doBackTracking}
+\SetKwFunction{doMaxTimeSlotsAdjustment}{doMaxTimeSlotsAdjustment}
+\SetKwFunction{checkSolution}{checkSolution}
+\SetKwFunction{resetDomains}{resetDomains}
+\KwResult{Encontrar una solución a una instancia del ETP con la mínima cantidad de slots}
+\KwData{
+\\ \hspace{0.5cm} $E \leftarrow$ Cantidad de Exámenes
+\\ \hspace{0.5cm} $L \leftarrow$ Conjunto de Horarios
+\\ \hspace{0.5cm} $cMatrix_{E \times E} \leftarrow$ Matriz de conflictos entre exámenes
+}
+\nl $D_{E} \leftarrow {l \in L }$\;
+\SetKwProg{backtracking}{Procedure}{}{XDDD}
+	\backtracking{\doBackTracking{exam}}{
+	slot $\leftarrow 1$\;
+	\For{slot $\in L$}{
+		\If{D[exam][slot]}{continue}
+		sol[exam] $\leftarrow$ slot\;
+		\If{exam es el último examen por asignar}{
+			\checkSolution{}\;
+			minSlotsFound $\leftarrow true$\;
+			continue\;
+		}
+	}
+	\If{doForwardChecking() retorna 0}{
+		continue\;
+	}
+	\doBackTracking{exam + 1}\;
+	\resetDomains{exam}\;
+ }
+ \caption{How to write algorithms}
+\end{algorithm}
+
+
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\SetKwFunction{algo}{algo}
+\SetKwFunction{doBackTracking}{doBackTracking}
+\SetKwFunction{doMaxTimeSlotsAdjustment}{doMaxTimeSlotsAdjustment}
+\SetKwFunction{checkSolution}{checkSolution}
+\SetKwFunction{resetDomains}{resetDomains}
+\KwResult{Encontrar una solución a una instancia del ETP con la mínima cantidad de slots}
+\KwData{
+\\ \hspace{0.5cm} $E \leftarrow$ Cantidad de Exámenes
+\\ \hspace{0.5cm} $L \leftarrow$ Conjunto de Horarios
+\\ \hspace{0.5cm} $cMatrix_{E \times E} \leftarrow$ Matriz de conflictos entre exámenes
+}
+\nl $D_{E} \leftarrow {l \in L }$\;
+\SetKwProg{backtracking}{Procedure}{}{XDDD}
+	\backtracking{\doBackTracking{exam}}{
+	slot $\leftarrow 1$\;
+	\For{slot $\in L$}{
+		\If{D[exam][slot]}{continue}
+		sol[exam] $\leftarrow$ slot\;
+		\If{exam es el último examen por asignar}{
+			\checkSolution{}\;
+			minSlotsFound $\leftarrow true$\;
+			continue\;
+		}
+	}
+	\If{doForwardChecking() retorna que el dominio de una variable quedó vacío}{
+		continue\;
+	}
+	\doBackTracking{exam + 1}\;
+	\resetDomains{exam}\;
+ }
+ \caption{How to write algorithms}
+\end{algorithm}
+
+ n
 \section{Experimentos}
 Se necesita saber c\'omo experimentaron, c\'omo definieron par\'ametros, 
 c\'omo los fueron modificando, cu\'ales problemas/instancias se estudiaron y por qu\'e, etc. 

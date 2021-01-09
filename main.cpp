@@ -11,6 +11,11 @@ int main(int argc, char const *argv[]) {
 		return 0;
 	}
 
+    ios_base::sync_with_stdio(false); 
+    cin.tie(NULL);
+    cout.setf(ios::fixed);
+    cout.precision(4);
+
 	bool showLogs = (bool) stoi(argv[2]);
 
 	// Cargar instancia
@@ -25,7 +30,7 @@ int main(int argc, char const *argv[]) {
 	// Resolver instancia
 	FcSolver solver(&etp, showLogs);
 	solver.doMaxTimeSlotsAdjustment();
-
+	solver.writeStatsToJson();
 	return 0;
 }
 
