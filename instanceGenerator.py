@@ -8,7 +8,7 @@ if len(sys.argv) < 4:
 	print("[Error] Example: python instanceGenerator.py Prueba2 15 100")
 	exit(0)
 
-instancesDir = "test/"
+instancesDir = "experiments/"
 
 instanceName = sys.argv[1]
 exams = int(sys.argv[2])
