@@ -246,6 +246,7 @@ Representaci\'on de \textbf{soluciones} (arreglos, matrices, etc.). En caso de t
 Para llevar a cabo la resolución del problema, se implementó un algoritmo de búsqueda completa con Forward Checking \cite{forwardchecking}. El algoritmo consiste en fijar una cantidad de horarios a asignar entre el total de exámenes y, en caso de detectar que no es posible generar una calendarización válida con la cantidad de horarios fijadas, repite el proceso considerando un horario extra. Cada vez que se asigna un horario a un examen, se lleva a cabo un filtro en los posibles horarios a asignar de los exámenes posteriores, es decir, se aplica arco-consistencia sin propagación entre la solución parcial y los dominios de los exámenes restantes. Si durante éste proceso un examen queda sin horarios disponibles para asignarle (vale decir, su dominio queda vacío), entonces se vuelven a agregar los horarios filtrados previamente y se intenta asignar el siguiente horario disponible al examen anterior, repitiendo el proceso. Cuando la cantidad de horarios a asignar es suficiente como para encontrar una calendarización válida, el algoritmo toma esa cantidad como la mínima necesaria para resolver la instancia, y sobre ella intenta minimizar la penalización promedio asociada al esparcimiento de los exámenes. 
 
 
+
 El algoritmo recorre 
 C\'omo fue implementada la soluci\'on. Interesa la implementaci\'on particular m\'as que el algoritmo gen\'erico, es decir, si se tiene que implementar SA, lo que se espera es que se explique en pseudoc\'odigo la estructura
 general y en p\'arrafos explicativos c\'omo fue implementada cada parte para su problema particular. Si
@@ -289,43 +290,81 @@ En caso de una t\'ecnica completa, describir detalles relevantes del proceso, si
 \end{algorithm}
 
 
+\begin{algorithm}[H]
+\SetAlgoLined
+\SetKwRepeat{Repeat}{Repeat}{Until}
+\SetKwFunction{doMaxTimeSlotsAdjustment}{doMaxTimeSlotsAdjustment}
+\SetKwFunction{resetDomains}{resetDomains}
+\KwResult{Encontrar una solución a una instancia del ETP con la mínima cantidad de slots}
+\SetKwProg{maxSlotsAdjusment}{Procedure}{}{End}
+\maxSlotsAdjusment{\doMaxTimeSlotsAdjustment{}}{
+	maxSlots $\leftarrow $ 0\;
+	\Repeat{minSlotsFound}{
+		maxSlots $\leftarrow $ maxSlots + 1\;
+		\doBackTracking{1}\;
+		\resetDomains{0}\;
+	}
+}
+\caption{How to write algorithms}
+\end{algorithm}
+
+\vfill
+\begin{algorithm}[H]
+\SetAlgoLined
+\SetKwRepeat{Repeat}{Repeat}{Until}
+\SetKwFunction{resetDomains}{resetDomains}
+\KwResult{Reiniciar (marcar con 0) los dominios filtrados por la arco-consistencia aplicada por el Forward Checking desde el examen indicado}
+\KwData{
+\begin{itemize}
+	\item[] actualExm $\leftarrow$ Examen con el cual se verificará si el dominio filtrado debe reiniciarse o no
+	\item[] $D_{i}$ $\leftarrow$ Lista de horarios asignables (dominio) del examen $i$, $D_{i}$[$j$] se marca con el examen del cual se realizó el FC para filtar el horario $j$
+	\item[] E $\leftarrow$ Cantidad de exámenes
+\end{itemize}
+}
+\SetKwProg{maxSlotsAdjusment}{Procedure}{}{End}
+\maxSlotsAdjusment{\resetDomains{actualExam}}{
+	exam $\leftarrow$ actualExam + 1\;
+	\While{exam $\leq$ E}{
+		\For{horario in $D_{exam}$}{
+			\If{si $D_{i}$[horario] está marcado por actualExam}{
+				$D_{i}$[horario] = 0\;
+			}
+		}
+		exam $\leftarrow$ exam + 1\;
+	}
+}
+\caption{How to write algorithms}
+\end{algorithm}
+
 
 \begin{algorithm}[H]
 \SetAlgoLined
 \SetKwFunction{algo}{algo}
-\SetKwFunction{doBackTracking}{doBackTracking}
-\SetKwFunction{doMaxTimeSlotsAdjustment}{doMaxTimeSlotsAdjustment}
-\SetKwFunction{checkSolution}{checkSolution}
-\SetKwFunction{resetDomains}{resetDomains}
-\KwResult{Encontrar una solución a una instancia del ETP con la mínima cantidad de slots}
+\SetKwFunction{doForwardChecking}{doForwardChecking}
+\KwResult{Establecer arco-consistencia entre los dominios de los exámenes por asignar y las asignaciones ya realizadas, marcando los valores incompatibles con el examen que inició el FC}
 \KwData{
-\\ \hspace{0.5cm} $E \leftarrow$ Cantidad de Exámenes
-\\ \hspace{0.5cm} $L \leftarrow$ Conjunto de Horarios
-\\ \hspace{0.5cm} $cMatrix_{E \times E} \leftarrow$ Matriz de conflictos entre exámenes
+\begin{itemize}
+	\item[] $E \leftarrow$ Cantidad de Exámenes
+	\item[] $L \leftarrow$ Conjunto de Horarios
+	\item[] $cMatrix_{E \times E} \leftarrow$ Matriz de conflictos entre exámenes, $cMatrix_{ij}$ es 1 si el examen $i$ tiene conflictos con el examen $j$
+	\item[] $D_{i}$ $\leftarrow$ Lista de horarios asignables (dominio) del examen $i$, $D_{i}$[$j$] se marca con el examen del cual se realizó el FC para filtar el horario $j$
+	\item[] $sol_{i}$ $\leftarrow$ Lista que representa la solución actual, donde $sol_{i}$ equivale al horario asignado al examen $i$
+\end{itemize}
 }
-\nl $D_{E} \leftarrow {l \in L }$\;
-\SetKwProg{backtracking}{Procedure}{}{XDDD}
-	\backtracking{\doBackTracking{exam}}{
-	slot $\leftarrow 1$\;
-	\For{slot $\in L$}{
-		\If{D[exam][slot]}{continue}
-		sol[exam] $\leftarrow$ slot\;
-		\If{exam es el último examen por asignar}{
-			\checkSolution{}\;
-			minSlotsFound $\leftarrow true$\;
-			continue\;
+\SetKwProg{fc}{Procedure}{}{XDDD}
+\fc{\doForwardChecking{actualExam}}{
+exam $\leftarrow$ actualExam + 1\;
+\While{exam $\leq$ E}{
+	\If{$D_{exam}$[$sol_{actualExam}$] no está marcado}{
+		\If{$cMatrix_{actualExam, exam}$}{
+			ola
 		}
-	}
-	\If{doForwardChecking() retorna que el dominio de una variable quedó vacío}{
-		continue\;
-	}
-	\doBackTracking{exam + 1}\;
-	\resetDomains{exam}\;
- }
+	}	
+	exam $\leftarrow$ exam + 1\;
+}
  \caption{How to write algorithms}
 \end{algorithm}
 
- n
 \section{Experimentos}
 Se necesita saber c\'omo experimentaron, c\'omo definieron par\'ametros, 
 c\'omo los fueron modificando, cu\'ales problemas/instancias se estudiaron y por qu\'e, etc. 

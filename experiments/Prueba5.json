@@ -1,0 +1,15 @@
+{
+     "name": "Prueba5",
+     "students": 20,
+     "assignements": 55,
+     "maxAssignements": 5,
+     "exams": 10,
+     "timeslots": 9,
+     "penalization": 23.7500,
+     "iterations": 18978160,
+     "checks": 2643380,
+     "removed": 2001912,
+     "solutions": 1008000,
+     "bestSolutions": 1,
+     "time": 8.7994
+}
