@@ -1,0 +1,15 @@
+{
+     "name": "E13S30",
+     "students": 30,
+     "assignements": 119,
+     "maxAssignements": 6,
+     "exams": 13,
+     "timeslots": 13,
+     "penalization": 34.4667,
+     "iterations": 1639063042,
+     "checks": -1320171752,
+     "removed": -1839090152,
+     "solutions": 479001600,
+     "bestSolutions": 1,
+     "time": 7713.8881
+}

@@ -1,0 +1,15 @@
+{
+     "name": "E4S10",
+     "students": 10,
+     "assignements": 10,
+     "maxAssignements": 1,
+     "exams": 4,
+     "timeslots": 2,
+     "penalization": 0.0000,
+     "iterations": 4,
+     "checks": 6,
+     "removed": 0,
+     "solutions": 1,
+     "bestSolutions": 1,
+     "time": 0.0001
+}

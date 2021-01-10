@@ -1,0 +1,15 @@
+{
+     "name": "E14S10",
+     "students": 10,
+     "assignements": 43,
+     "maxAssignements": 7,
+     "exams": 14,
+     "timeslots": 8,
+     "penalization": 67.0000,
+     "iterations": 49652834,
+     "checks": 15149617,
+     "removed": 13696242,
+     "solutions": 40320,
+     "bestSolutions": 1,
+     "time": 13.1716
+}

@@ -1,0 +1,15 @@
+{
+     "name": "E9S25",
+     "students": 25,
+     "assignements": 68,
+     "maxAssignements": 4,
+     "exams": 9,
+     "timeslots": 8,
+     "penalization": 19.8000,
+     "iterations": 602506,
+     "checks": 136368,
+     "removed": 130090,
+     "solutions": 15120,
+     "bestSolutions": 1,
+     "time": 0.2861
+}

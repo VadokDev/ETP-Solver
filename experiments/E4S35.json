@@ -1,0 +1,15 @@
+{
+     "name": "E4S35",
+     "students": 35,
+     "assignements": 53,
+     "maxAssignements": 2,
+     "exams": 4,
+     "timeslots": 5,
+     "penalization": 6.2857,
+     "iterations": 222,
+     "checks": 97,
+     "removed": 97,
+     "solutions": 24,
+     "bestSolutions": 1,
+     "time": 0.0003
+}

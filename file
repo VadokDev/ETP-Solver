@@ -1,0 +1,27 @@
+estado-del-arte
+ETPSolver
+experiments
+FcSolver.cpp
+FcSolver.h
+FcSolver.o
+file
+iaec2.pem
+Instance.cpp
+instanceGenerator.py
+Instance.h
+Instance.o
+instances
+LICENSE
+lol.txt
+main.cpp
+main.o
+makefile
+paper-final
+README.md
+solutions
+stats
+test
+
+real	0m0.001s
+user	0m0.000s
+sys	0m0.001s

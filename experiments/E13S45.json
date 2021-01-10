@@ -1,0 +1,15 @@
+{
+     "name": "E13S45",
+     "students": 45,
+     "assignements": 152,
+     "maxAssignements": 6,
+     "exams": 13,
+     "timeslots": 13,
+     "penalization": 25.9556,
+     "iterations": -1959248494,
+     "checks": 232791808,
+     "removed": 232761064,
+     "solutions": 479001600,
+     "bestSolutions": 1,
+     "time": 9273.2542
+}

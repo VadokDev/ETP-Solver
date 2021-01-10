@@ -1,0 +1,15 @@
+{
+     "name": "E14S20",
+     "students": 20,
+     "assignements": 91,
+     "maxAssignements": 7,
+     "exams": 14,
+     "timeslots": 12,
+     "penalization": 48.5500,
+     "iterations": 1064340243,
+     "checks": -2103120711,
+     "removed": 1620660027,
+     "solutions": 558835200,
+     "bestSolutions": 1,
+     "time": 9262.6864
+}

@@ -1,0 +1,15 @@
+{
+     "name": "E10S25",
+     "students": 25,
+     "assignements": 75,
+     "maxAssignements": 5,
+     "exams": 10,
+     "timeslots": 8,
+     "penalization": 31.7600,
+     "iterations": 607992,
+     "checks": 153148,
+     "removed": 138414,
+     "solutions": 5040,
+     "bestSolutions": 1,
+     "time": 0.0980
+}

@@ -1,0 +1,15 @@
+{
+     "name": "E2S35",
+     "students": 35,
+     "assignements": 35,
+     "maxAssignements": 1,
+     "exams": 2,
+     "timeslots": 2,
+     "penalization": 0.0000,
+     "iterations": 2,
+     "checks": 1,
+     "removed": 0,
+     "solutions": 1,
+     "bestSolutions": 1,
+     "time": 0.0001
+}
