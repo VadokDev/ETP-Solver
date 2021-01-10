@@ -166,8 +166,6 @@ long double FcSolver::getSolutionPenalty() {
 				penaltyTotal += examsPenalization(inst->sExams[i][j], inst->sExams[i][k]);
 			}
 		}
-		
-
 	}
 
 	return penaltyTotal;
@@ -202,7 +200,7 @@ void FcSolver::writeStatsToJson() {
 		<< "     \"name\": " 	<< "\"" << inst->name << "\"" 	<< "," << '\n'
 		<< "     \"students\": " 		<< inst->S				<< "," << '\n'
 		<< "     \"assignements\": " 	<< inst->A				<< "," << '\n'
-		<< "     \"maxAssignements\": "<< inst->L				<< "," << '\n'
+		<< "     \"maxAssignements\": " << inst->L				<< "," << '\n'
 		<< "     \"exams\": " 			<< inst->E				<< "," << '\n'
 		<< "     \"timeslots\": " 		<< maxSlots				<< "," << '\n'
 		<< "     \"penalization\": "	<< bestSolPenalty		<< "," << '\n'
@@ -281,6 +279,7 @@ void FcSolver::doBackTracking(int exm) {
 		if(!doForwardChecking(exm)) {
 			if(logs) cout << "[Backtracking] "<< "No available domains" << '\n';
 			continue;
+			resetDomains(exm);
 		}
 
 		// Continuar el camino del BT para asignar un horario al siguiente examen

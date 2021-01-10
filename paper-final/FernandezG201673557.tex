@@ -8,7 +8,7 @@
 \usepackage{ctable} % for \specialrule command
 \usepackage[top=3cm,bottom=3cm,left=3.5cm,right=3.5cm,footskip=1.5cm,headheight=1.5cm,headsep=.5cm,textheight=3cm]{geometry}
 \usepackage{hyperref}
-\usepackage[ruled,vlined]{algorithm2e}
+\usepackage[ruled,vlined, spanish, onelanguage]{algorithm2e}
 
 \usepackage{etoolbox}
 \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
@@ -237,75 +237,94 @@ Con el fin de resolver la variante del ETP a trabajar, se propone un modelo mate
 \section{Representación}
 
 
-
-\section{Representaci\'on}
 Representaci\'on de \textbf{soluciones} (arreglos, matrices, etc.). En caso de t\'ecnicas completas indicar variables y dominios. Incluir justificaci\'on y ejemplos para mayor claridad.
 
-\section{Descripci\'on del algoritmo}
+\section{Descripción del Algoritmo}
 
-Para llevar a cabo la resolución del problema, se implementó un algoritmo de búsqueda completa con Forward Checking \cite{forwardchecking}. El algoritmo consiste en fijar una cantidad de horarios a asignar entre el total de exámenes y, en caso de detectar que no es posible generar una calendarización válida con la cantidad de horarios fijadas, repite el proceso considerando un horario extra. Cada vez que se asigna un horario a un examen, se lleva a cabo un filtro en los posibles horarios a asignar de los exámenes posteriores, es decir, se aplica arco-consistencia sin propagación entre la solución parcial y los dominios de los exámenes restantes. Si durante éste proceso un examen queda sin horarios disponibles para asignarle (vale decir, su dominio queda vacío), entonces se vuelven a agregar los horarios filtrados previamente y se intenta asignar el siguiente horario disponible al examen anterior, repitiendo el proceso. Cuando la cantidad de horarios a asignar es suficiente como para encontrar una calendarización válida, el algoritmo toma esa cantidad como la mínima necesaria para resolver la instancia, y sobre ella intenta minimizar la penalización promedio asociada al esparcimiento de los exámenes. 
+Para llevar a cabo la resolución del problema, se implementó un algoritmo de búsqueda completa con Forward Checking \cite{forwardchecking}. El algoritmo consiste en fijar una cantidad de horarios inicial a asignar entre el total de exámenes y, en caso de detectar que no es posible generar una calendarización válida con la cantidad de horarios fijadas, repetir el proceso considerando un horario extra. Cada vez que se asigna un horario a un examen, se lleva a cabo un filtro en los posibles horarios a asignar de los exámenes posteriores, es decir, se aplica arco-consistencia sin propagación entre la solución parcial y los dominios de los exámenes restantes. Si durante éste proceso un examen queda sin horarios disponibles para asignarle (vale decir, su dominio queda vacío), entonces se vuelven a agregar los horarios filtrados previamente y se intenta asignar el siguiente horario disponible al examen anterior, repitiendo el proceso. Cuando la cantidad de horarios a asignar es suficiente como para encontrar una calendarización válida, el algoritmo toma esa cantidad como la mínima necesaria para resolver la instancia y, sobre ella, intenta minimizar la penalización promedio asociada al esparcimiento de los exámenes asignados a cada estudiante.\\
 
+Para facilitar las cosas, el algoritmo considera que el máximo de horarios siempre será la cantidad total de exámenes, pues en el peor de los casos, siempre será posible generar una calendarización válida asignando un horario distinto a cada examen (ejemplo, una instancia donde al menos 1 estudiante debiese rendir todos los exámenes). Además, se considera que el mínimo de horarios para comenzar la búsqueda completa debe ser la cantidad máxima de exámenes a rendir por algún estudiante, pues éste requerirá como mínimo 1 horario distinto por cada uno de sus exámenes. Finalmente, para la ejecución del algoritmo, se requiere contar con los siguientes parámetros y variables:
 
+\begin{itemize}
+	\item[$\sq$] \textbf{Parámetros}:
+	\begin{itemize}
+		\item[$\sq$] $E \leftarrow$ Cantidad de Exámenes
+		\item[$\sq$] $L \leftarrow$ Cantidad máxima de exámenes que un alumno tiene asignado en la instancia, lo que a su vez, se considera la cantidad mínima de horarios para partir
+		\item[$\sq$] $cMatrix_{E \times E} \leftarrow$ Matriz de conflictos entre exámenes, $cMatrix$[$i$][$j$] es 1 si el examen $i$ tiene conflictos con el examen $j$, 0 si no
+	\end{itemize}
+	\item[$\sq$] \textbf{Variables}:
+	\begin{itemize}
+		\item[$\sq$] $D$[$E$][$E$] $\leftarrow$ Lista de horarios asignables (dominio) del examen $i$, donde $D$[$i$][$j$] se marca con el examen del cual se realizó el FC para filtar el horario $j$
+		\item[$\sq$] $sol$[$E$] $\leftarrow$ Lista que representa la solución actual, donde $sol$[$i$] almacena el horario asignado al examen $i$
+		\item[$\sq$] maxSlots $\leftarrow$ Cantidad máxima de horarios a usar, se ajusta luego de cada BT + FC
+		\item[$\sq$] minSlotsFound $\leftarrow$ Flag que indica si se encontró el mínimo de horarios necesarios para resolver la instancia
+		\item[$\sq$] bestSol[E] $\leftarrow$ Mejor solución encontrada hasta el momento, misma representación que $sol$[$i$]
+		\item[$\sq$] bestPenalty $\leftarrow$ Penalización asociada a la mejor solución encontrada hasta el momento
+	\end{itemize}
+\end{itemize}
 
-El algoritmo recorre 
-C\'omo fue implementada la soluci\'on. Interesa la implementaci\'on particular m\'as que el algoritmo gen\'erico, es decir, si se tiene que implementar SA, lo que se espera es que se explique en pseudoc\'odigo la estructura
-general y en p\'arrafos explicativos c\'omo fue implementada cada parte para su problema particular. Si
-se utilizan operadores/movimientos se debe justificar por qu\'e se utilizaron dichos operadores/movimientos. 
-En caso de una t\'ecnica completa, describir detalles relevantes del proceso, si se utiliza recursi\'on o no, explicar c\'omo se van construyendo soluciones, cu\'ando se revisan restricciones, c\'omo se registran conflictos, etc. En este punto no se espera que se incluya c\'odigo, eso va aparte.
-
-
-\begin{algorithm}[H]
-\SetAlgoLined
-\SetKwFunction{algo}{algo}
-\SetKwFunction{doBackTracking}{doBackTracking}
-\SetKwFunction{doMaxTimeSlotsAdjustment}{doMaxTimeSlotsAdjustment}
-\SetKwFunction{checkSolution}{checkSolution}
-\SetKwFunction{resetDomains}{resetDomains}
-\KwResult{Encontrar una solución a una instancia del ETP con la mínima cantidad de slots}
-\KwData{
-\\ \hspace{0.5cm} $E \leftarrow$ Cantidad de Exámenes
-\\ \hspace{0.5cm} $L \leftarrow$ Conjunto de Horarios
-\\ \hspace{0.5cm} $cMatrix_{E \times E} \leftarrow$ Matriz de conflictos entre exámenes
-}
-\nl $D_{E} \leftarrow {l \in L }$\;
-\SetKwProg{backtracking}{Procedure}{}{XDDD}
-	\backtracking{\doBackTracking{exam}}{
-	slot $\leftarrow 1$\;
-	\For{slot $\in L$}{
-		\If{D[exam][slot]}{continue}
-		sol[exam] $\leftarrow$ slot\;
-		\If{exam es el último examen por asignar}{
-			\checkSolution{}\;
-			minSlotsFound $\leftarrow true$\;
-			continue\;
-		}
-	}
-	\If{doForwardChecking() retorna 0}{
-		continue\;
-	}
-	\doBackTracking{exam + 1}\;
-	\resetDomains{exam}\;
- }
- \caption{How to write algorithms}
-\end{algorithm}
-
+Teniendo esta información, el algoritmo comienza a recorrer el espacio de búsqueda desde el primer examen considerando la mínima cantidad de horarios necesaria. Cuando termina su recorrido, si no se encuentra una solución que marque el flag $minSlotsFound$, se aumenta la cantidad mínima de horarios en 1 y se reinician los dominios filtrados de todos los exámenes para así repetir el proceso, según el siguiente algoritmo:\\
 
 \begin{algorithm}[H]
 \SetAlgoLined
 \SetKwRepeat{Repeat}{Repeat}{Until}
+\SetKwFunction{doBackTracking}{doBackTracking}
 \SetKwFunction{doMaxTimeSlotsAdjustment}{doMaxTimeSlotsAdjustment}
 \SetKwFunction{resetDomains}{resetDomains}
 \KwResult{Encontrar una solución a una instancia del ETP con la mínima cantidad de slots}
 \SetKwProg{maxSlotsAdjusment}{Procedure}{}{End}
 \maxSlotsAdjusment{\doMaxTimeSlotsAdjustment{}}{
 	maxSlots $\leftarrow $ 0\;
+	bestPenalty $\leftarrow$ INF;
 	\Repeat{minSlotsFound}{
 		maxSlots $\leftarrow $ maxSlots + 1\;
 		\doBackTracking{1}\;
 		\resetDomains{0}\;
 	}
 }
-\caption{How to write algorithms}
+\caption{Resolución del ETP con BT + FC aumentando la cantidad de horarios a usar}
+\end{algorithm}
+\vspace*{0.4cm}
+Para recorrer el espacio de búsqueda se realiza un Backtracking recursivo que asigna un horario a cada examen en la lista $sol$[examen]. Ésta asignación se lleva a cabo a partir de un examen al cual se asigna cada uno de los horarios disponibles en orden ascendente, siempre y cuando el horario no se encuentre filtrado del dominio del examen actual. Una vez asignado un horario válido al examen, se revisa si el examen trabajado es el último de la instancia, en tal caso se llegó a una solución factible con cantidad mínima de horarios necesaria para la calendarización, luego se marca el flag $minSlotsFound$ como verdadero y se calcula la penalización asociada. Si la penalización es menor a la penalización de la mejor calendarización encontrada hasta el momento, se actualiza $bestSol$ y $bestPenalty$, de lo contrario, se realiza arco consistencia entre la solución parcial y el resto de exámenes por asignar a través del \textit{Algoritmo 3}, que aplica la técnica de Forward Checking. Si el \textit{Algoritmo 3} indica que alguno de los exámenes posteriores se quedó sin horarios disponibles, entonces se reinician los dominios de los exámenes posteriores y se intenta asignar el siguiente horario al examen actual, de lo contrario, se realiza Backtracking de manera recursiva desde el examen posterior y al llegar a alguna hoja se reinician los dominios de los exámenes posteriores
+
+C\'omo fue implementada la soluci\'on. Interesa la implementaci\'on particular m\'as que el algoritmo gen\'erico, es decir, si se tiene que implementar SA, lo que se espera es que se explique en pseudoc\'odigo la estructura
+general y en p\'arrafos explicativos c\'omo fue implementada cada parte para su problema particular. Si
+se utilizan operadores/movimientos se debe justificar por qu\'e se utilizaron dichos operadores/movimientos. 
+En caso de una t\'ecnica completa, describir detalles relevantes del proceso, si se utiliza recursi\'on o no, explicar c\'omo se van construyendo soluciones, cu\'ando se revisan restricciones, c\'omo se registran conflictos, etc. En este punto no se espera que se incluya c\'odigo, eso va aparte.
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\SetKwFunction{doBackTracking}{doBackTracking}
+\SetKwFunction{doMaxTimeSlotsAdjustment}{doMaxTimeSlotsAdjustment}
+\SetKwFunction{checkSolution}{checkSolution}
+\SetKwFunction{resetDomains}{resetDomains}
+\SetKwFunction{calculatePenalty}{calculatePenalty}
+\KwResult{Calendarización de exámenes para la cantidad de horarios actual, o bien, determinar que no es posible una calendarización con la cantidad de horarios disponible}
+\SetKwProg{backtracking}{Procedure}{}{End}
+	\backtracking{\doBackTracking{exam}}{
+	slot $\leftarrow 1$\;
+	\While{slot $\leq$ maxSlots}{
+		\If{D[exam][slot]}{continue}
+		sol[exam] $\leftarrow$ slot\;
+		\uIf{exam es el último examen por asignar}{
+			minSlotsFound $\leftarrow true$\;
+			penalty = \calculatePenalty{sol}\;
+			\If{bestPenalty $<$ penalty}{
+				bestSol = sol\;
+				bestPenalty = penalty\;
+			}			
+		} \Else {
+			\If{doForwardChecking() retorna 0}{
+				\resetDomains{exam}\;
+				continue\;
+			}
+			\doBackTracking{exam + 1}\;
+			\resetDomains{exam}\;
+		} 
+		slot $\leftarrow$ slot + 1\;
+	}
+ }
+ \caption{Asignar un horario a cada examen filtrando los horarios disponibles con Forward Checking}
 \end{algorithm}
 
 \vfill
@@ -314,55 +333,56 @@ En caso de una t\'ecnica completa, describir detalles relevantes del proceso, si
 \SetKwRepeat{Repeat}{Repeat}{Until}
 \SetKwFunction{resetDomains}{resetDomains}
 \KwResult{Reiniciar (marcar con 0) los dominios filtrados por la arco-consistencia aplicada por el Forward Checking desde el examen indicado}
-\KwData{
-\begin{itemize}
-	\item[] actualExm $\leftarrow$ Examen con el cual se verificará si el dominio filtrado debe reiniciarse o no
-	\item[] $D_{i}$ $\leftarrow$ Lista de horarios asignables (dominio) del examen $i$, $D_{i}$[$j$] se marca con el examen del cual se realizó el FC para filtar el horario $j$
-	\item[] E $\leftarrow$ Cantidad de exámenes
-\end{itemize}
-}
 \SetKwProg{maxSlotsAdjusment}{Procedure}{}{End}
 \maxSlotsAdjusment{\resetDomains{actualExam}}{
 	exam $\leftarrow$ actualExam + 1\;
 	\While{exam $\leq$ E}{
-		\For{horario in $D_{exam}$}{
-			\If{si $D_{i}$[horario] está marcado por actualExam}{
-				$D_{i}$[horario] = 0\;
+		horario $\leftarrow$ 1\;
+		\While{horario $\leq$ E}{
+			\If{si $D$[exam][horario] está marcado por actualExam}{
+				$D$[exam][horario] = 0\;
 			}
+			horario $\leftarrow$ horario + 1\;
 		}
 		exam $\leftarrow$ exam + 1\;
 	}
 }
-\caption{How to write algorithms}
+\caption{Reiniciar dominios filtrados por un examen}
 \end{algorithm}
 
 
 \begin{algorithm}[H]
 \SetAlgoLined
-\SetKwFunction{algo}{algo}
 \SetKwFunction{doForwardChecking}{doForwardChecking}
-\KwResult{Establecer arco-consistencia entre los dominios de los exámenes por asignar y las asignaciones ya realizadas, marcando los valores incompatibles con el examen que inició el FC}
-\KwData{
-\begin{itemize}
-	\item[] $E \leftarrow$ Cantidad de Exámenes
-	\item[] $L \leftarrow$ Conjunto de Horarios
-	\item[] $cMatrix_{E \times E} \leftarrow$ Matriz de conflictos entre exámenes, $cMatrix_{ij}$ es 1 si el examen $i$ tiene conflictos con el examen $j$
-	\item[] $D_{i}$ $\leftarrow$ Lista de horarios asignables (dominio) del examen $i$, $D_{i}$[$j$] se marca con el examen del cual se realizó el FC para filtar el horario $j$
-	\item[] $sol_{i}$ $\leftarrow$ Lista que representa la solución actual, donde $sol_{i}$ equivale al horario asignado al examen $i$
-\end{itemize}
-}
-\SetKwProg{fc}{Procedure}{}{XDDD}
+\KwResult{Establecer arco-consistencia entre los dominios de los exámenes por asignar y las asignaciones ya realizadas, marcando los valores incompatibles con el examen que inició el FC, retorna 0 si algún examen se queda sin dominio disponible y 1 en otro caso}
+
+\SetKwProg{fc}{Procedure}{}{End}
 \fc{\doForwardChecking{actualExam}}{
-exam $\leftarrow$ actualExam + 1\;
-\While{exam $\leq$ E}{
-	\If{$D_{exam}$[$sol_{actualExam}$] no está marcado}{
-		\If{$cMatrix_{actualExam, exam}$}{
-			ola
+	exam $\leftarrow$ actualExam + 1\;
+	\While{exam $\leq$ E}{
+		\If{$D$[exam][sol[actualExam]] no está marcado}{
+			\If{$cMatrix$[actualExam][exam] tiene un conflicto}{
+				$D$[exam][sol[actualExam]] = actualExam\;
+			}
 		}
-	}	
-	exam $\leftarrow$ exam + 1\;
+		horario $\leftarrow$ 1\;
+		disponibles $\leftarrow$ 0\;
+
+		\While{horario $\leq$ maxSlots}{
+			\If{$D$[exam][horario] no está marcado}{
+				disponibles $\leftarrow$ disponibles + 1\;
+			}
+			horario $\leftarrow$ horario + 1\;
+		}
+
+		\If{disponibles igual a 0}{
+			return 0\;
+		}
+		exam $\leftarrow$ exam + 1\;
+	}
+	return 1\;
 }
- \caption{How to write algorithms}
+\caption{Forward Checking a los horarios de los exámenes}
 \end{algorithm}
 
 \section{Experimentos}
