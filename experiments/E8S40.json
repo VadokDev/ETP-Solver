@@ -1,0 +1,15 @@
+{
+     "name": "E8S40",
+     "students": 40,
+     "assignements": 93,
+     "maxAssignements": 4,
+     "exams": 8,
+     "timeslots": 8,
+     "penalization": 16.6750,
+     "iterations": 180428,
+     "checks": 47344,
+     "removed": 46000,
+     "solutions": 5040,
+     "bestSolutions": 1,
+     "time": 0.0545
+}

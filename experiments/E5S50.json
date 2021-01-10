@@ -1,0 +1,15 @@
+{
+     "name": "E5S50",
+     "students": 50,
+     "assignements": 72,
+     "maxAssignements": 2,
+     "exams": 5,
+     "timeslots": 6,
+     "penalization": 4.4800,
+     "iterations": 1348,
+     "checks": 500,
+     "removed": 500,
+     "solutions": 120,
+     "bestSolutions": 1,
+     "time": 0.0008
+}

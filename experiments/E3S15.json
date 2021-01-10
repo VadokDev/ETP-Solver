@@ -1,0 +1,15 @@
+{
+     "name": "E3S15",
+     "students": 15,
+     "assignements": 22,
+     "maxAssignements": 2,
+     "exams": 3,
+     "timeslots": 3,
+     "penalization": 7.4667,
+     "iterations": 10,
+     "checks": 6,
+     "removed": 4,
+     "solutions": 2,
+     "bestSolutions": 1,
+     "time": 0.0001
+}

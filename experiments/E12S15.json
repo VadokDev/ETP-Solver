@@ -1,0 +1,15 @@
+{
+     "name": "E12S15",
+     "students": 15,
+     "assignements": 48,
+     "maxAssignements": 6,
+     "exams": 12,
+     "timeslots": 8,
+     "penalization": 41.5333,
+     "iterations": 1685522,
+     "checks": 296393,
+     "removed": 220995,
+     "solutions": 40320,
+     "bestSolutions": 1,
+     "time": 1.7921
+}

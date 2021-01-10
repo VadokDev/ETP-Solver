@@ -1,0 +1,15 @@
+{
+     "name": "E11S25",
+     "students": 25,
+     "assignements": 91,
+     "maxAssignements": 6,
+     "exams": 11,
+     "timeslots": 11,
+     "penalization": 36.0800,
+     "iterations": 148057070,
+     "checks": 23206018,
+     "removed": 22968418,
+     "solutions": 3628800,
+     "bestSolutions": 1,
+     "time": 70.9268
+}

@@ -1,0 +1,15 @@
+{
+     "name": "E8S5",
+     "students": 5,
+     "assignements": 10,
+     "maxAssignements": 4,
+     "exams": 8,
+     "timeslots": 5,
+     "penalization": 19.2000,
+     "iterations": 25236,
+     "checks": 3808,
+     "removed": 684,
+     "solutions": 3072,
+     "bestSolutions": 1,
+     "time": 0.0044
+}

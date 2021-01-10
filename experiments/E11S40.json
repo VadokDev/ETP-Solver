@@ -1,0 +1,15 @@
+{
+     "name": "E11S40",
+     "students": 40,
+     "assignements": 126,
+     "maxAssignements": 6,
+     "exams": 11,
+     "timeslots": 10,
+     "penalization": 28.9000,
+     "iterations": 39986220,
+     "checks": 6809268,
+     "removed": 6809008,
+     "solutions": 362880,
+     "bestSolutions": 1,
+     "time": 9.1111
+}

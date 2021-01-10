@@ -1,0 +1,15 @@
+{
+     "name": "E7S15",
+     "students": 15,
+     "assignements": 38,
+     "maxAssignements": 4,
+     "exams": 7,
+     "timeslots": 7,
+     "penalization": 25.5333,
+     "iterations": 21408,
+     "checks": 5968,
+     "removed": 5464,
+     "solutions": 720,
+     "bestSolutions": 1,
+     "time": 0.0043
+}

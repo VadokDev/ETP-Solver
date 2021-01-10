@@ -1,0 +1,15 @@
+{
+     "name": "E4S20",
+     "students": 20,
+     "assignements": 27,
+     "maxAssignements": 2,
+     "exams": 4,
+     "timeslots": 4,
+     "penalization": 4.8000,
+     "iterations": 115,
+     "checks": 53,
+     "removed": 32,
+     "solutions": 18,
+     "bestSolutions": 1,
+     "time": 0.0001
+}

@@ -1,0 +1,15 @@
+{
+     "name": "E6S40",
+     "students": 40,
+     "assignements": 88,
+     "maxAssignements": 3,
+     "exams": 6,
+     "timeslots": 7,
+     "penalization": 14.8250,
+     "iterations": 9360,
+     "checks": 2840,
+     "removed": 2840,
+     "solutions": 720,
+     "bestSolutions": 1,
+     "time": 0.0060
+}
