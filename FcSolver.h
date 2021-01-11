@@ -5,7 +5,7 @@
 #include <string>
 #include <Instance.h>
 
-#define SOLUTIONS_DIRECTORY "./experiments/"
+#define SOLUTIONS_DIRECTORY "./solutions/"
 
 class FcSolver {
 	private:

@@ -1,0 +1,16 @@
+{
+     "name": "Prueba2",
+     "students": 10,
+     "conflicts":4,
+     "assignements": 14,
+     "maxAssignements": 2,
+     "exams": 5,
+     "timeslots": 3,
+     "penalization": 6.4000,
+     "iterations": 26,
+     "checks": 22,
+     "removed": 10,
+     "solutions": 2,
+     "bestSolutions": 1,
+     "time": 0.0091
+}

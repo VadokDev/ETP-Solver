@@ -199,6 +199,7 @@ void FcSolver::writeStatsToJson() {
 	jsonFile << "{" << '\n'
 		<< "     \"name\": " 	<< "\"" << inst->name << "\"" 	<< "," << '\n'
 		<< "     \"students\": " 		<< inst->S				<< "," << '\n'
+		<< "     \"conflicts\":"		<< inst->countConflicts()<<"," << '\n'
 		<< "     \"assignements\": " 	<< inst->A				<< "," << '\n'
 		<< "     \"maxAssignements\": " << inst->L				<< "," << '\n'
 		<< "     \"exams\": " 			<< inst->E				<< "," << '\n'

@@ -24,6 +24,7 @@ int main(int argc, char const *argv[]) {
 	etp.genConflictMatrix();
 	etp.loadStudents();
 	
+	//etp.countConflicts();
 	//etp.showConflictMatrix();
 	//etp.showStudentExams();
 

@@ -113,6 +113,21 @@ void Instance::showConflictMatrix() {
 	}
 }
 
+int Instance::countConflicts() {
+	int conflicts = 0;
+	for (int i = 0; i < E + 1; ++i) {
+		for (int j = 0; j < E + 1; ++j) {
+			if(i == j)
+				continue;
+
+			if(cMatrix[i][j])
+				conflicts++;
+		}
+	}
+
+	return conflicts / 2;
+}
+
 Instance::Instance(std::string instanceName) {
 	instancesDir = INSTANCES_DIRECTORY;
 	name = instanceName;

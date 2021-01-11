@@ -7,7 +7,7 @@
 typedef std::vector<int> vi;
 typedef std::vector<vi> vii;
 
-#define INSTANCES_DIRECTORY "./experiments/"
+#define INSTANCES_DIRECTORY "./instances/"
 
 class Instance {
 	public:
@@ -26,6 +26,7 @@ class Instance {
 		void loadStudents();
 		void showStudentExams();
 		void showConflictMatrix();
+		int countConflicts();
 		Instance(std::string instanceName);
 		~Instance();
 };
